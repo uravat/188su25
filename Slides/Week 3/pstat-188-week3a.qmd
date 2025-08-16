@@ -1,0 +1,1254 @@
+---
+title: "PSTAT 188: Week 3"
+date: "August 19, 2025"
+author: Mike Ludkovski (based on materials by Trevor Ruiz)
+format: 
+    revealjs:
+        smaller: true
+        incremental: false
+        slide-number: true
+        progress: true
+        output-file: week3a.html
+df-print: paged
+---
+
+```{python}
+#| echo: false
+#| slideshow: {slide_type: skip}
+import pandas as pd
+import numpy as np
+import altair as alt
+import IPython.display as display
+```
+
+## Plan for Today: Finish Tidy and Start Visualizing
+
+- Data Science Lifecycle
+
+- __Working with tabular data__
+
+- __Data visualization__
+
+
+## What is research?
+
+Research is *systematic investigation* undertaken in order to establish or discover facts.
+
+
+What are facts in data science?
+
+-   method *M* outperforms method *M'* at task *T*
+
+-   we analyzed data *D* and reached the conclusion that...
+
+__The research landscape:__
+
+Formal communities -- *i.e.,* journals, departments, conferences -- are still coalescing around data science research.
+
+Relevant research largely occurs in statistics, computer science, and application domains, and can be divided broadly into:
+
+-   methodology -- creating new techniques to analyze data
+
+-   applications -- applying existing methods to generate new findings
+
+## Methodological vs Applied research
+
+Methodological research might involve:
+
+-   designing a faster algorithm for solving a particular problem
+
+-   proposing a new technique for analyzing a particular type of data
+
+-   generalizing a technique to a broader range of problems
+
+
+Applied research might involve:
+
+-   analyzing a specific dataset or producing a novel analysis of existing data
+
+-   creating ad-hoc methods for a domain-specific problem
+
+-   importing methodology from another area to bear on a domain-specific problem
+
+
+## Structuring Data
+
+What is a dataset?
+
+**A dataset is any collection of data**
+
+* Typically, a dataset is in tabular  form: 
+
+- **Variables** across the columns
+- **Observations** or data points down the rows
+
+
+* **Tidy data: matching semantics with structure**
+
+* **Transforming data frames**
+    + Subsetting (slicing and filtering)
+    + Derived variables
+    + Aggregation and summary statistics
+
+## Tidying 
+
+
+::: {.r-smaller}
+Allison 1976 mammal brain-body weight dataset. **Long** but not tidy:
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+# import brain and body weights
+mammal1 = pd.read_csv('../../datasets/allison1976.csv').iloc[:, 0:3].set_index('species')
+
+mammal2 = mammal1.melt(
+    var_name = 'measurement', 
+    value_name = 'weight', 
+    value_vars = ['brain_wt', 'body_wt'],
+    ignore_index = False
+).sort_index()
+
+mammal3 = mammal2.reset_index().pivot(index = 'measurement', columns = 'species', values = 'weight')
+```
+
+
+```{python}
+#| tags: []
+mammal1.head(3)
+```
+
+**Long and tidy:**
+
+```{python}
+#| tags: []
+mammal2.head(4)
+```
+
+:::
+
+## Mammal data: wide layout
+
+::: {.r-smaller}
+```{python}
+#| tags: []
+mammal3.iloc[:, 0:4].head()
+```
+
+:::
+
+## GDP growth data
+
+Wide and not tidy: 
+
+::: {.r-smaller}
+```{python}
+#| tags: []
+gdp1 = pd.read_csv('../../datasets/annual_growth.csv', encoding = 'latin1')
+gdp1.head().iloc[:, [0, 1, 50, 51, 52]]
+```
+
+Long and **tidy**:
+
+```{python}
+#| tags: []
+gdp2 = gdp1.head(
+).iloc[0:2, [0, 1, 50, 51, 52]].set_index(
+    'Country Name'
+).drop(
+    columns = 'Country Code'
+).melt(
+    var_name = 'year',
+    value_name = 'growth_pct',
+    ignore_index = False
+).reset_index(
+).sort_values(
+    ['year', 'Country Name']
+).set_index('Country Name')
+
+gdp2
+```
+
+:::
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+weather1 = pd.read_csv('../../datasets/sb_weather.csv')
+weather2 = weather1.copy()
+weather2['MONTH'] = pd.to_datetime(weather1.DATE, infer_datetime_format = True).dt.month
+weather2['DAY'] = pd.to_datetime(weather1.DATE, infer_datetime_format = True).dt.day
+weather2['YEAR'] = pd.to_datetime(weather1.DATE, infer_datetime_format = True).dt.year
+weather2 = weather2.drop(columns = ['NAME', 'DATE'])
+weather3 = weather2.set_index(
+    ['MONTH', 'DAY']
+).melt(
+    value_name = 'temp',
+    var_name = 'type',
+    value_vars = ['TMAX', 'TMIN'],
+    ignore_index = False
+).reset_index().pivot(index = ['MONTH', 'type'], columns = 'DAY', values = 'temp')
+```
+
+
+## Form and representation
+
+Because of the wide range of possible layouts for a dataset, and the variety of choices that are made about how to store data, **data scientists are constantly faced with determining how best to reorganize datasets in a way that facilitates exploration and analysis.** 
+
+. . .
+
+Broadly, this involves two interdependent choices:
+
+* *Choice of **representation**: how to encode information.*
+    + Example: parse dates as 'MM/DD/YYYY' (one variable) or 'MM', 'DD', 'YYYY' (three variables)?
+    + Example: use values 1, 2, 3 or 'low', 'med', 'high'?
+    + Example: name variables 'question1', 'question2', ..., or 'age', 'income', ...?
+    
+
+* *Choice of **form**: how to display information*
+    + Example: wide table or long table?
+    + Example: one table or many?
+
+## Tidy data
+
+Each value in a dataset is
+
+* an **observation**: collection of measurements
+* of a **variable**: attributes of measurement 
+* taken on an **observational unit**: entity measured
+
+
+The tidy standard consists in matching semantics and structure. A dataset is **tidy** if:
+
+1. Each variable is a column.
+2. Each observation is a row.
+3. Each table contains measurements on only one type of observational unit.
+
+![Tidy data.](../figures/tidy-layout.png)
+
+
+## Example of Tidy 
+
+```{python}
+#| tags: []
+gdp2.head(4)
+```
+
+Semantics vs structure:
+
+Semantics |  | Structure | 
+---|---|---|---
+Observations | Annual records | Rows | Annual records
+Variables | GDP growth and year | Columns | GDP growth and year
+Observational units | Countries | Tables | Just one
+
+
+All **three rules** are met: rows are observations, columns are variables, and there's one unit type and one table. **Tidy**.
+
+
+## Common messes
+
+> "Well, here's another nice mess you've gotten me into" -- Oliver Hardy
+
+These examples illustrate some common messes:
+
+1. *Columns are values, not variables*
+    + GDP data: columns are 1961, 1962, ...   
+
+2. *Multiple variables are stored in one column*
+    + Mammal data: weight column contains both body and brain weights    
+
+3. *Variables or values are stored in rows and columns*
+    + Weather data: date values are stored in rows and columns, each column contains both min and max temperatures    
+
+4. *Measurements on one type of observational unit are divided into multiple tables.*
+    + UN development data: one table for population statistics and a separate table for gender statistics.
+
+## Tidying operations
+
+These messes can be cleaned up via:
+
+* *melt*
+    + reshape a dataframe from wide to long format
+* *pivot*
+    + reshape a dataframe from long to wide format
+* *merge*
+    + combine two dataframes row-wise by matching the values of certain columns
+
+## Melt
+
+Melting resolves the problem of having values stored as columns (common mess 1). 
+
+![](../figures/tidy-melt.png)
+
+## Melt
+
+```{python}
+#| tags: []
+gdp1.head(2)
+```
+
+::: {.r-smaller}
+```{python}
+#| echo: true
+#| slideshow: {slide_type: fragment}
+#| tags: []
+# in pandas
+gdp1.melt(
+    id_vars = ['Country Name', 'Country Code'], # which variables do you want to retain for each row? .
+    var_name = 'Year', # what do you want to name the variable that will contain the column names?
+    value_name = 'GDP Growth', # what do you want to name the variable that will contain the values?
+).head(3)
+```
+:::
+
+## Pivot
+
+Pivoting resolves the issue of having multiple variables stored in one column (common mess 2). It's the inverse operation of melting. 
+
+![](../figures/tidy-pivot.png)
+
+## Pivot
+
+```{python}
+mammal2.head(4)
+```
+
+```{python}
+#| echo: true
+# in pandas
+mammal2.pivot(
+    columns = 'measurement', # which variable(s) do you want to send to new column names?
+    values = 'weight' # which variable(s) do you want to use to populate the new columns?
+).head(2)
+```
+
+## Pivot and melt
+
+Common mess 3 is a combination of messes 1 and 2: values or variables are stored in both rows and columns. Pivoting and melting in sequence can usually fix this.
+
+::: {.r-smaller}
+
+```{python}
+#| tags: []
+weather3
+```
+
+:::
+
+## Pivot and melt
+
+::: {.panel-tabset}
+
+## First, melt
+
+```{python}
+#| echo: true
+weather3.melt(
+    ignore_index = False,
+    var_name = 'day',
+    value_name = 'temp'
+).head()
+```
+
+## Then, pivot
+
+```{python}
+#| echo: true
+weather3.melt(
+    ignore_index = False,
+    var_name = 'day',
+    value_name = 'temp'
+).reset_index().pivot(
+    index = ['MONTH', 'day'],
+    columns = 'type',
+    values = 'temp'
+).reset_index().rename_axis(columns = {'type': ''}).head()
+```
+
+:::
+
+## Merge
+
+Merging resolves the issue of storing observations or variables on one unit type in multiple tables (mess 4). The basic idea is to combine by matching rows.
+
+![](../figures/join-diagram.png)
+
+
+## UN development data: multiple tables
+
+United Nations country development data organized into different tables 
+
+
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+undev1 = pd.read_csv(
+    '../../datasets/hdi3.csv', 
+    encoding = 'latin1',
+    na_values = '..'
+).drop(
+    columns = 'hdi_rank'
+).set_index(
+    'country'
+).sort_index()
+
+undev2 = pd.read_csv(
+    '../../datasets/hdi2.csv', 
+    encoding = 'latin1',
+    na_values = '..'
+).drop(
+    columns = ['hdi_rank', 'maternal_mortality']
+).set_index('country')
+```
+
+Here is a table of population measurements:
+
+::: {.r-smaller}
+```{python}
+#| slideshow: {slide_type: fragment}
+#| tags: []
+undev1.head(2)
+```
+
+And here is a table of a few gender-related variables:
+
+```{python}
+#| tags: []
+undev2.head(2)
+```
+:::
+
+
+## UN development data: one table
+
+Here are both tables merged by country:
+
+::: {.r-smaller}
+
+```{python}
+#| code-fold: true
+#| echo: true
+#| tags: []
+undev_combined1 = pd.merge(undev1, undev2, on = 'country')
+undev_combined1.head(3)
+```
+
+::: 
+## UN development data: one (longer) table
+
+And here is another arrangement of the merged table:
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+undev_combined2 = undev_combined1.melt(
+    id_vars = undev1.columns[undev1.columns.str.contains('pop')].tolist(),
+    var_name = 'gender_variable',
+    value_name = 'gender_value',
+    ignore_index = False
+).melt(
+    id_vars = ['gender_variable', 'gender_value'],
+    var_name = 'population_variable',
+    value_name = 'population_value',
+    ignore_index = False
+)
+```
+
+```{python}
+undev_combined2.head(5)
+```
+
+
+## Merge
+
+The general syntactical procedure to merge dataframes `df1` and `df2` is:
+
+* Specify an **order**: `merge(df1, df2)` or `merge(df2, df1)`.
+
+* Specify **keys**: the shared columns to use for matching rows of `df1` with rows of `df2`.
+    + for example, merging on `date` will align rows in `df2` with rows of `df1` that have the same value for `date`    
+
+* Specify a **rule** for which rows to return after merging
+    + keep all rows with key entries in `df1`, drop non-matching rows in `df2` ('left' join)
+    + keep all rows with key entries in `df2` drop non-matching rows in `df1` ('right' join)
+    + keep all rows with key entries in either `df1` or `df2`, inducing missing values ('outer' join)
+    + keep all rows with key entries in both `df1` and `df2` ('inner' join)
+
+
+
+# Data visualization
+
+::: {.columns}
+
+::: {.column width=67%}
+
+* **Uses of data visualization**
+    + Exploration
+    + Presentation
+
+* **Statistical graphics**
+    + Graphical elements: axes, geometric objects, aesthetic attributes, and text
+    + Building graphics: mapping data to graphical elements
+
+* **Survey of common graphics**
+    + one- and two-variable displays
+
+* **Principles of effective visualization**
+    + Effective uses of aesthetics and layout
+    + Common blunders
+  
+:::    
+
+::: {.column width=30%}
+    
+![](../figures/BidenTrumpEnergy2024.jpg)
+:::
+
+:::
+
+## Uses of graphics
+
+There is a broad distinction between:
+
+* **exploratory graphics**, which are intended to be seen only by analysts; and
+* **presentation graphics**, which are intended to be seen by an audience.
+
+. . .
+
+Exploratory graphics are made quickly in large volumes, and usually not formatted too carefully. Think of them like the pages of a sketchbook.
+
+
+Presentation graphics are made slowly with great attention to detail. Think of them as exhibition artworks.
+
+The two are not mutually exclusive: an especially helpful exploratory graphic is often worth developing as a presentation graphic to help an audience understand 'what the data look like'.
+
+## Elements of statistical graphics
+
+Statistical graphics consist of the following four elements:
+
+1. **Axes**
+    + References for all other graphical elements.
+2. **Geometric objects**
+    + Points, lines, curves, filled regions, etc.
+3. **Aesthetic attributes**
+    + Color, shape, size, opacity/transparency.
+4. **Text**
+    + Labels, legends, and titles.
+    
+Many of the figures below are from Claus Wilke's [Fundamentals of Data Visualization](https://clauswilke.com/dataviz/).
+
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+points = pd.DataFrame(data = {'x': np.arange(5), 'y': np.logspace(0, 2, 5)})
+axes = alt.Chart(points).mark_point(opacity = 0).encode(
+    x = alt.X('x', title = ''), 
+    y = alt.Y('y', title = '')
+).properties(
+    width = 250,
+    height = 250
+).configure_axis(labelFontSize = 16)
+
+pointgeom = alt.Chart(points).mark_point(opacity = 1).encode(
+    x = alt.X('x', title = ''), 
+    y = alt.Y('y', title = '')
+).properties(
+    width = 250,
+    height = 250,
+    title = "Point"
+)
+
+linegeom = alt.Chart(points).mark_line(opacity = 1).encode(
+    x = alt.X('x', title = ''), 
+    y = alt.Y('y', title = '')
+).properties(
+    width = 250,
+    height = 250,
+    title = 'Line'
+)
+
+polygeom = alt.Chart(points).mark_area(opacity = 0.4).encode(
+    x = alt.X('x', title = ''), 
+    y = alt.Y('y', title = '')
+).properties(
+    width = 250,
+    height = 250,
+    title = 'Filled region'
+)
+
+shapes = alt.Chart(points).mark_point(size = 150).encode(
+    x = alt.X('x', title = ''), 
+    y = alt.Y('y', title = ''),
+    shape = alt.Shape('y:N', legend = None)
+).properties(
+    width = 150,
+    height = 150,
+    title = 'Shape'
+)
+
+colors = alt.Chart(points).mark_point(size = 150).encode(
+    x = alt.X('x', title = ''), 
+    y = alt.Y('y', title = ''),
+    color = alt.Color('y:N', legend = None)
+).properties(
+    width = 150,
+    height = 150,
+    title = 'Color'
+)
+
+opacities = alt.Chart(points).mark_circle(size = 150).encode(
+    x = alt.X('x', title = ''), 
+    y = alt.Y('y', title = ''),
+    opacity = alt.Opacity('y:N', legend = None)
+).properties(
+    width = 150,
+    height = 150,
+    title = 'Opacity'
+)
+
+sizes = alt.Chart(points).mark_point().encode(
+    x = alt.X('x', title = ''), 
+    y = alt.Y('y', title = ''),
+    size = alt.Size('y:N', legend = None)
+).properties(
+    width = 150,
+    height = 150,
+    title = 'Size'
+)
+```
+
+## Axes
+
+The word *axis* literally means axle: an axis is an object that other things turn around.
+
+
+In statistical graphics, axes establish positional references for locating any geometric object --- line, point, polygon ---on the graphic.
+
+```{python}
+axes
+```
+
+## Geometric objects
+
+**Geometric objects** are the things depicted on a plot, whatever those may be; typically points, lines, polygons, and shapes.
+
+```{python}
+(pointgeom | linegeom | polygeom).configure_axis(labelFontSize = 16).configure_title(fontSize = 16)
+```
+
+## Aesthetic attributes
+
+**Aesthetics** mean qualities of geometric objects. Primary aesthetics in statistical graphics:
+
+* Shape (for points)
+* Color
+* Size
+* Opacity/transparency
+
+```{python}
+#| tags: []
+(shapes | colors | sizes | opacities).configure_axis(labelFontSize = 16).configure_title(fontSize = 16)
+```
+
+## Text
+
+Text is used to label axes, objects, legends, and specify titles.
+
+
+Text is what creates the story -- text gives a plot its plot!
+
+```{python}
+#| tags: []
+points['z'] = 10*points['x'] + 10
+alt.Chart(points).mark_line().encode(
+    x = alt.X('z', title = 'Age'),
+    y = alt.Y('y', title = 'Excitement about socks as birthday gift')
+).properties(
+    width = 300,
+    height = 300
+).configure_axis(
+    labelFontSize = 16,
+    titleFontSize = 16
+).configure_title(fontSize = 16)
+```
+
+## Statistical graphics are mappings
+
+Statistical graphics are **mappings** of dataframe columns and attributes to graphical elements: axes, geometric objects, and aesthetic attributes. 
+
+For a first example, consider the following time series of Cuba's population by year:
+
+```{python}
+#| code-fold: true
+#| echo: true
+#| tags: []
+pop = pd.read_csv('../../datasets/population.csv', encoding = 'latin1').melt(
+    id_vars = ['Country Name', 'Country Code'],
+    var_name = 'Year',
+    value_name = 'Population'
+).sample(frac = 1)
+
+pop_plot = alt.Chart(pop[pop['Country Code'] == 'CUB']).mark_line().encode(
+    x = 'Year:T',
+    y = alt.Y('Population', scale = alt.Scale(zero = False))
+).properties(
+    width = 800,
+    height = 220,
+    title = 'Population of Cuba'
+).configure_axis(
+    labelFontSize = 14,
+    titleFontSize = 16
+).configure_title(fontSize = 16)
+
+pop_plot
+```
+
+Mappings:
+
+* population $\longrightarrow$ y coordinate of axis;
+* year $\longrightarrow$ x coordinate of axis;
+* observations $\longrightarrow$ line
+
+
+
+## Mapping columns to aesthetics {.smaller}
+
+::: {.columns}
+
+::: {.column width=72%}
+
+Now consider aggregated populations by global region and year:
+
+```{python}
+#| code-fold: true
+#| echo: true
+#| tags: []
+
+countryinfo = pd.read_csv('../../datasets/country-info.csv').rename(
+    columns = {'alpha-3': 'Country Code', 'region': 'Region'}
+).loc[:, ['Country Code', 'Region']]
+
+popregion = pd.merge(
+    countryinfo, 
+    pop, 
+    how = 'right', 
+    on = ['Country Code']
+).dropna().astype(
+    {'Region': 'category'}
+).groupby(
+    ['Region', 'Year']
+).sum().reset_index()
+
+popregion_plot = alt.Chart(popregion).mark_line(opacity = 1).encode(
+    x = 'Year:T',
+    y = alt.Y('Population', scale = alt.Scale(type = 'log', zero = False)),
+    color = 'Region'
+).properties(width = 600, height = 150)
+
+popregion_plot.configure_axis(
+    labelFontSize = 16,
+    titleFontSize = 16
+).configure_title(
+    fontSize = 16
+).configure_legend(
+    labelFontSize = 16,
+    titleFontSize = 16,
+     orient="bottom"
+)
+```
+
+:::
+
+::: {.column width=23%}
+
+
+Mappings:
+
+* population $\longrightarrow$ y
+* year $\longrightarrow$ x
+* region $\longrightarrow$ color
+* observations $\longrightarrow$ line (groupwise by **color**)
+
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+lab3 = pd.read_csv('../../datasets/lab3-data.csv')
+
+# first plot in lab
+firstplot = alt.Chart(lab3).mark_circle().encode(
+    x = alt.X('GDP per capita'),
+    y = alt.Y('All', title = 'Life expectancy at birth', scale = alt.Scale(zero = False))
+)
+
+# define new variable for difference
+lab3['Difference'] = lab3.Female - lab3.Male 
+
+# final plot in lab
+finalplot1 = alt.Chart(lab3).mark_circle(opacity = 0.5).encode(
+    x = alt.X('GDP per capita', scale = alt.Scale(type = 'log')),
+    y = alt.Y('All', title = 'Life expectancy at birth', scale = alt.Scale(zero = False)),
+    color = 'region',
+    size = alt.Size('Population', scale = alt.Scale(type = 'sqrt'))
+).properties(
+    width = 150, 
+    height = 200
+).facet(
+    column = 'Year'
+)
+
+finalplot2 = alt.Chart(lab3).mark_circle(opacity = 0.5).encode(
+    x = alt.X('GDP per capita', scale = alt.Scale(type = 'log')),
+    y = alt.Y('Difference', title = 'Sex difference in life expectancy (F - M)', scale = alt.Scale(zero = False)),
+    color = 'region',
+    size = alt.Size('Population', scale = alt.Scale(type = 'sqrt'))
+).properties(
+    width = 150, 
+    height = 200
+).facet(
+    column = 'Year'
+)
+```
+:::
+
+:::
+
+## Using aesthetics
+
+The ability to map variables to the elements of a graphic is essential *to display more than two variables at a time* by leveraging aesthetic attributes.
+
+Let us explore life expectancy vis-a-vis GDP per capita in different countries. 
+
+Start with a scatterplot: each point represents a country in a particular year:
+
+```{python}
+firstplot.configure_axis(
+    labelFontSize = 16,
+    titleFontSize = 16
+).configure_title(fontSize = 16)
+```
+
+> -> **Continue in Google Colab/Jupyter**
+
+
+## Using graphics for discovery
+
+Same x-y relationship as before, but together with time, continental region, and population aestethics
+
+
+```{python}
+finalplot2.configure_axis(
+    labelFontSize = 16,
+    titleFontSize = 16
+).configure_title(fontSize = 16).configure_legend(
+    labelFontSize = 16,
+    titleFontSize = 16
+).configure_header(
+    labelFontSize = 16,
+    titleFontSize = 16
+)
+```
+
+. . .
+
+* On average women outlive men by longer in wealthier countries by 2-3 years
+* Clear pattern but lots of variation for a given GDP/capita
+
+Verges on too **complex**.
+
+## Common statistical graphics
+
+
+
+* **One-variable graphics** are used to visualize distributions.
+
+* **Two-variable graphics** are used to visualize relationships.
+
+* **Three-variable graphics** are used to visualize spatial data, matrices, and a collection of other data types.
+
+* The above are not exclusive, just some of the most common.
+
+. . .
+
+> Most graphics you'll encounter are grouped one- or two-variable graphics with superpositions of geometric objects differentiating observed from inferred values -- *e.g.*, scatterplots with points color-coded by another (grouping) variable and trend lines. 
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+# plots for next section
+popcountry = pd.merge(
+    countryinfo, 
+    pop, 
+    how = 'right', 
+    on = ['Country Code']
+).dropna().astype(
+    {'Region': 'category'}
+).set_index('Year')
+
+popcountry['log(Population)'] = np.log(popcountry['Population'])
+boxplot = alt.Chart(popcountry.loc["1970"]).mark_boxplot().encode(
+    x = alt.X('Population', scale = alt.Scale(type = 'log'))
+).properties(
+    height = 50,
+    title = 'National populations in 1970'
+)
+
+histogram = alt.Chart(popcountry.loc["1970"]).mark_bar().encode(
+    x = alt.X('log(Population)', bin = alt.Bin(maxbins = 20)),
+    y = 'count()'
+).properties(
+    height = 150,
+    title = 'National populations in 1970'
+)
+```
+
+
+
+## Single-variable graphics
+
+Single-variable graphics usually display the distribution of values of a single variable.
+
+![Common single-variable graphics](../figures/single-distributions-1.png)
+
+Histograms and smoothed density plots show shape but depend on arbitrary binning/smoothing parameters.
+
+CDF and quantile plots show the distribution exactly but are harder to interpret.
+
+## Histograms
+
+**Histograms** show the relative frequencies of values of a single variable.
+
+```{python}
+#| code-fold: true
+#| echo: true
+#| code-line-numbers: "3-6"
+alt.Chart(
+    popcountry.loc["1970"]
+).mark_bar().encode(
+    x = alt.X('log(Population)', 
+            bin = alt.Bin(maxbins = 50)),
+    y = 'count()'
+).properties(
+    height = 150,
+    title = 'National populations in 1970'
+).properties(
+    width = 500, height = 300 
+).configure_axis(
+    labelFontSize = 16, titleFontSize = 16
+).configure_legend(
+    labelFontSize = 16, titleFontSize = 16
+).configure_title(
+    fontSize = 16
+)
+```
+
+
+The main advantage of the histogram is it shows the **shape** of a distribution.
+
+## Bin widths
+
+Shape pf the histogram depends on bin width, which is an arbitrary parameter.
+
+::: {.columns}
+
+::: {.column width=47%}
+```{python}
+#| code-fold: true
+#| echo: true
+#| code-line-numbers: "5"
+alt.Chart(
+    popcountry.loc["1970"]
+).mark_bar().encode(
+    x = alt.X('log(Population)', 
+            bin = alt.Bin(maxbins = 10)),
+    y = 'count()'
+).properties(
+    height = 150,
+    title = 'National populations in 1970'
+).properties(
+    width = 350, height = 100 
+).configure_axis(
+    labelFontSize = 16, titleFontSize = 16
+).configure_legend(
+    labelFontSize = 16, titleFontSize = 16
+).configure_title(
+    fontSize = 16
+)
+```
+:::
+
+::: {.column width=47%}
+```{python}
+#| code-fold: true
+#| echo: true
+#| code-line-numbers: "5"
+alt.Chart(
+    popcountry.loc["1970"]
+).mark_bar().encode(
+    x = alt.X('log(Population)', 
+            bin = alt.Bin(maxbins = 50)),
+    y = 'count()'
+).properties(
+    height = 150,
+    title = 'National populations in 1970'
+).properties(
+    width = 350, height = 100 
+).configure_axis(
+    labelFontSize = 16, titleFontSize = 16
+).configure_legend(
+    labelFontSize = 16, titleFontSize = 16
+).configure_title(
+    fontSize = 16
+)
+```
+:::
+
+:::
+
+
+Always experiment with **multiple** bin widths to ensure you don't overlook any important *details,* such as outliers, multiple modes, etc.
+
+* Binning at left is too **coarse**, obscures outlying values
+* Binning at right is good
+
+## Density plots
+
+Density plots are smoothed histograms.
+
+![Density plots with different smoothing kernels and bandwidths](../figures/titanic-ages-dens-grid-1.png)
+
+## Grouped single-variable graphics
+
+Grouped single-variable graphics allow visualization of multiple distributions.
+
+
+![](../figures/multiple-distributions-1.png){width=800}
+
+## Boxplots
+
+Boxplots display data quantiles and outliers, conveying **skewness** and **range**.
+
+![](../figures/boxplot-schematic-1.png)
+
+Due to their compactness, they are useful for comparing multiple distributions.
+
+## Many boxplots
+
+*Single-variable graphics are not necessarily limited to univariate data;* one might want to compare distributions using the same single-variable displays shown groupwise.
+
+
+```{python}
+#| slideshow: {slide_type: fragment}
+#| code-fold: true
+#| echo: true
+#| code-line-numbers: "3-7"
+alt.data_transformers.disable_max_rows()
+alt.Chart(
+    popcountry.reset_index()
+).mark_boxplot(
+    outliers = True, size = 7
+).encode(
+    x = 'Year:T', 
+    y = alt.Y('Population', scale = alt.Scale(type = 'log')) 
+).properties(
+    width = 600
+).configure_axis(
+    labelFontSize = 16, titleFontSize = 16
+).configure_legend(
+    labelFontSize = 16, titleFontSize = 16
+).configure_title(
+    fontSize = 16
+)
+```
+
+
+
+## Visualizing many distributions
+
+**Ridge plots** are good options for comparing a large number of distributions at once.
+
+![Ridge plot: temperatures in Nebraska in 2016.](../figures/temp-ridgeline-1.png){height=4in}
+
+
+## Two-variable graphics
+
+```{python}
+#| slideshow: {slide_type: skip}
+#| tags: []
+lifegdp = lab3.set_index('Year')
+```
+
+Two-variable graphics are all about displaying relationships, usually with scatter or lines.
+
+
+![Basic two-variable scatterplots](../figures/basic-scatter-1.png)
+
+## Scatterplots
+
+Scatterplots display relationships between two variables.
+
+```{python}
+#| code-fold: true
+#| echo: true
+#| code-line-numbers: "3-6"
+alt.Chart(
+    lifegdp.loc[2015]
+).mark_point().encode(
+    x = alt.X('GDP per capita', scale = alt.Scale(type = 'log')),
+    y = alt.Y('All', scale = alt.Scale(zero = False), 
+    title = 'Life expectancy at birth')
+).properties(
+    width = 600
+).configure_axis(
+    labelFontSize = 16, titleFontSize = 16
+).configure_legend(
+    labelFontSize = 16, titleFontSize = 16
+).configure_title(
+    fontSize = 16
+)
+```
+
+. . .
+
+
+## Bar plots
+
+Bar plots usually depict amount or magnitude.
+
+
+> *There is often a better alternative to a bar chart* such as line plots, area plots, etc
+
+Some rules of thumb for bar plots:
+
+* orient axes so labels are legible
+* don't stack; use side-by-side bars instead
+* start bars at zero, so that their height is proportional to the quantity of interest
+* arrange bar order sensibly; if the categories are ordered, arrange by order, and otherwise, sort by bar height
+
+## Axis orientation for barplots
+
+If you have to tilt your head, there's a better orientation available. 
+
+::: {.columns}
+
+::: {.column width=45%}
+![Awkward axis orientation.](../figures/boxoffice-rot-axis-tick-labels-1.png)
+:::
+
+::: {.column width=45%}
+![Good axis orientation.](../figures/boxoffice-horizontal-1.png)
+:::
+
+:::
+
+## Ordering of bars
+
+For categorical bar plots, order bars by height.
+
+::: {.columns}
+
+::: {.column width=45%}
+![Messy order](../figures/boxoffice-horizontal-bad-order-1.png)
+:::
+
+::: {.column width=45%}
+![Ordered by bar height](../figures/boxoffice-horizontal-1.png)
+:::
+
+:::
+
+## Ordering of bars
+
+But *don't* order by height if the categories themselves are ordered.
+
+::: {.columns}
+
+::: {.column width=45%}
+![Ordered categories](../figures/income-by-age-1.png)
+:::
+
+::: {.column width=45%}
+![Jumbled order](../figures/income-by-age-sorted-1.png)
+:::
+
+:::
+
+
+## Always start at zero
+
+Bar height should be proportional to the quantity of interest.
+
+::: {.columns}
+
+::: {.column width=45%}
+![Bars start near the minimum observed value.](../figures/hawaii-income-bars-bad-1.png)
+:::
+
+::: {.column width=45%}
+![Bars start at zero.](../figures/hawaii-income-bars-good-1.png)
+:::
+
+:::
+
+## But don't take up all the space
+
+If your bars occupy almost the entire plot, there's probably a better alternative. Try **dots**.
+
+::: {.columns}
+
+::: {.column width=45%}
+![Bars do a poor job of conveying differences in life expectancy](../figures/Americas-life-expect-bars-1.png)
+:::
+
+::: {.column width=45%}
+![Dots make this clearer, since the axis can start away from zero](../figures/Americas-life-expect-1.png)
+:::
+
+:::
+
+
+## Other common visualizations
+
+Smoothing scatterplots helps to visualize trends.
+
+Generalize the line of best fit. Take PSTAT 127 for how to make those
+
+![Scatterplot smoothing](../figures/tank-capacity-loess-1.png){height=4in}
+
+## Heatmaps
+
+Useful for displaying amounts in two-way groupings or for visualizing matrices.
+
+:::{.columns}
+
+:::{.column width=47%}
+![Heatmap](../figures/internet-over-time2-1.png)
+:::
+
+:::{.column width=47%}
+![Countries reordered by internet use in 2016.](../figures/internet-over-time-1.png)
+
+How to order countries?
+
+
+:::
+
+:::
+
+
+
+## Color-coded Maps
+
+Chloropleth maps are the most common display of spatial data.
+
+![Chloropleth map](../figures/population-density-counties-1.png)
+
+## Next Class
+
+Making ethical plots
+
+Color choices
+
+Working with seaborn
