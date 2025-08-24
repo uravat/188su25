@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="pstat-188-week4_files/libs/clipboard/clipboard.min.js"></script>
+<script src="pstat-188-week4_files/libs/quarto-html/tabby.min.js"></script>
+<script src="pstat-188-week4_files/libs/quarto-html/popper.min.js"></script>
+<script src="pstat-188-week4_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="pstat-188-week4_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="pstat-188-week4_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="pstat-188-week4_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.6.42">
+
+  <meta name="author" content="Mike Ludkovski (based on materials by Alex Franks &amp; Netasha Pizano)">
+  <title>PSTAT 188: Introduction to Ethics in Data Science</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="pstat-188-week4_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="pstat-188-week4_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="pstat-188-week4_files/libs/revealjs/dist/theme/quarto-2f366650f320edcfcf53d73c80250a32.css">
+  <link href="pstat-188-week4_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="pstat-188-week4_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="pstat-188-week4_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="pstat-188-week4_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">PSTAT 188: Introduction to Ethics in Data Science</h1>
+  <p class="subtitle">including Recidivism Case Study via Python</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Mike Ludkovski (based on materials by Alex Franks &amp; Netasha Pizano) 
+</div>
+</div>
+</div>
+
+</section>
+<section id="overview-of-this-week" class="slide level2">
+<h2>Overview of this week</h2>
+<ol type="1">
+<li>Defining ethics</li>
+<li>Ethical issues related to computers and data</li>
+<li>Case study: COMPAS recidivism</li>
+<li>Case study: Swain’s Jury</li>
+<li>Case study: Simpson’s paradox</li>
+</ol>
+</section>
+<section id="defining-ethics" class="slide level2">
+<h2>Defining Ethics</h2>
+<p>“The subject matter of ethics is supplied by two intimately related terms, right and good” <span class="citation" data-cites="sharp1928a">(<a href="#/references" role="doc-biblioref" onclick="">Sharp 1928</a>)</span>.</p>
+<ul>
+<li>Definition:
+<ul>
+<li>The judgment upon actions which are categorized as right or wrong</li>
+<li>The societal use of terms good and bad</li>
+</ul></li>
+<li>Ethics derived from the Greek word ethos - spirit of the community.</li>
+<li>Ethicists try to answer “What actions are regarded as right or wrong by the members of it’s society?”</li>
+</ul>
+</section>
+<section id="establishment-of-ethics-in-science" class="slide level2">
+<h2>Establishment of Ethics in Science</h2>
+<ul>
+<li>The study of ethics dates back to work of Socrates, Plato, and Aristotle
+<ul>
+<li>Hippocratic Oath
+<ul>
+<li>Established several medical principles that are still significant today, including consent.</li>
+</ul></li>
+</ul></li>
+<li>Ethics in experimental science was a global concern after WWII
+<ul>
+<li>Nuremberg Code (1947)
+<ul>
+<li>A set of ethical research principles for human experimentation as a result of the Nazi Nuremberg trials.</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>Advancements in computer and data communications technology have resulted in the need to reevaluate the application of ethical principles.</p>
+<ul>
+<li>quote from <span class="citation" data-cites="weiss1990">(<a href="#/references" role="doc-biblioref" onclick="">Weiss 1990</a>)</span> “The XXII self-assessment: The ethics of computing”</li>
+</ul>
+</section>
+<section id="ethical-issues-related-to-computers-and-data" class="slide level2 smaller">
+<h2>Ethical Issues Related to Computers and Data</h2>
+<p>Many of the daily work-related responsibilities of data scientists rely on making an ethical choice</p>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Data privacy</a></li><li><a href="#tabset-1-2">Social justice</a></li><li><a href="#tabset-1-3">Transparency</a></li><li><a href="#tabset-1-4">Consent</a></li><li><a href="#tabset-1-5">Accuracy</a></li><li><a href="#tabset-1-6">Accountability</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<ul>
+<li><p>Data privacy legislation differs across jurisdictions.</p></li>
+<li><p><em>Data privacy</em> in the <a href="https://leginfo.legislature.ca.gov/faces/codes_displayText.xhtml?division=3.&amp;part=4.&amp;lawCode=CIV&amp;title=1.81.5">California Consumer Protection Act</a> is the protection of personal information (e.g., Name, email address, purchase and browsing history, location and employment data, IP address, sensitive personal information)</p></li>
+</ul>
+</div>
+<div id="tabset-1-2">
+<ul>
+<li><em>Social justice</em> in data science includes practices that promote equity and fairness, focusing on ensuring that data and reports accurately and adequately represent populations. Practicing reflexivity is especially important to identify personal bias while performing data science tasks.</li>
+</ul>
+</div>
+<div id="tabset-1-3">
+<ul>
+<li><em>Transparency</em> relates to communicating with customers about data collection (design, amount, and duration of storage) and the ease with which other data scientists can access collected information. Transparency related to data is especially important for building trust with customers and other data practitioners.</li>
+</ul>
+</div>
+<div id="tabset-1-4">
+<ul>
+<li><em>Consent</em> is an agreement before data collection that lists a participant’s rights to information about a research study or organization’s information collection. Participants can terminate their participation and opt out of data use at any time. Changes to informed consent have made it easier for companies to obtain broad consent, which does not require re-consent for the re-use of data <span class="citation" data-cites="froomkin2019">(<a href="#/references" role="doc-biblioref" onclick="">Froomkin 2019</a>)</span> .</li>
+</ul>
+</div>
+<div id="tabset-1-5">
+<ul>
+<li><em>Accuracy</em> relates to the characteristics of high-quality data, which are highly complete, valid, and consistent.</li>
+</ul>
+</div>
+<div id="tabset-1-6">
+<ul>
+<li><em>Accountability</em> relates to a data scientist’s quality of work, which delineates decisions and processes to create reproducible work that follows company guidelines and adheres to laws.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="ethical-issues-related-to-computers-and-data-example" class="slide level2">
+<h2>Ethical Issues Related to Computers and Data: Example</h2>
+<ul>
+<li><p><strong>Uber</strong> was fined millions by the Netherlands government after a watchdog found that the U.S. company was transferring data about drivers from the Netherlands to the U.S.</p></li>
+<li><p><strong>Target</strong> was sued after a father was able to determine that his daughter was pregnant. A predictive algorithm determined that she was likely pregnant given the items she purchased and sent coupons for expecting mothers.</p></li>
+<li><p>Greater public access to computers raised ethical concerns <span class="citation" data-cites="weiss1990">(<a href="#/references" role="doc-biblioref" onclick="">Weiss 1990</a>)</span>:</p>
+<ul>
+<li>Ownership of assets/material (e.g., programs, code, visual material)</li>
+<li>The degree that programs, software, and computer users are held responsible for outcomes</li>
+</ul></li>
+</ul>
+</section>
+<section id="legal-frameworks-which-regulate-data-science" class="slide level2">
+<h2>Legal Frameworks which Regulate Data Science</h2>
+<ul>
+<li>There is variation across jurisdictions in the laws relating to privacy protection and permissible data usage.</li>
+<li>Two common themes in the <strong>EU</strong> and <strong>US</strong> legislation which are fundamental to data protection :
+<ul>
+<li>Anti-discrimination rights</li>
+<li>Personal data protection rights</li>
+</ul></li>
+</ul>
+</section>
+<section id="legal-frameworks-which-regulate-data-science-1" class="slide level2">
+<h2>Legal Frameworks which Regulate Data Science</h2>
+<ul>
+<li>Anti-discrimination Rights in the U.S.
+<ul>
+<li>The Civil Rights Act of 1964 prohibits discrimination based on color, race, sex, religion, or nationality,</li>
+<li>The Disabilities Act of 1990 prohibits discrimination based on disability</li>
+</ul></li>
+<li>Personal data protection in the U.S.
+<ul>
+<li>In the United States, the <a href="https://www.fpc.gov/resources/fipps/">Fair Information Practice Principles</a> (1973) delineate principles that agencies use when evaluating information systems, processes, programs, and activities that affect individual privacy</li>
+<li>Since 2017, an increase in proposed laws and regulations related to AI have been proposed</li>
+<li><a href="https://www.whitehouse.gov/ostp/ai-bill-of-rights/">The US’s Blueprint for an AI Bill of Rights</a><br>
+</li>
+</ul></li>
+</ul>
+</section>
+<section id="data-ethics-principles" class="slide level2">
+<h2>Data Ethics Principles</h2>
+<ul>
+<li>To provide broad guidance,various organizations (e.g., <a href="https://www.amstat.org/your-career/ethical-guidelines-for-statistical-practice">ASA</a>, <span class="citation" data-cites="americanstatisticalassociation2022a">(<a href="#/references" role="doc-biblioref" onclick="">American Statistical Association 2022</a>)</span>) and government agencies have proposed numerous data ethics principles.</li>
+<li>These principles vary in number, scope, and practicality</li>
+<li>Different corporations may chose to uphold the principles that meet and fit the company’s culture due to the lack of federal legislation</li>
+</ul>
+</section>
+<section id="data-ethics-principles-oecd" class="slide level2">
+<h2>Data Ethics Principles (OECD)</h2>
+<ul>
+<li>The Organization for Economics Co-operation and Development’s (OECD) <span class="citation" data-cites="oecd2002">(<a href="#/references" role="doc-biblioref" onclick="">OECD 2002</a>)</span> guidelines in the Protection of Privacy and Trans border Flows of Personal Data are one of the most supported set of principles by U.S. government agencies.</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:25%;">
+<ol type="1">
+<li>Collection Limitation Principle</li>
+<li>Data Quality Principle</li>
+</ol>
+</div><div class="column" style="width:25%;">
+<ol start="3" type="1">
+<li>Purpose Specification Principle</li>
+<li>Use Limitation Principle</li>
+</ol>
+</div><div class="column" style="width:25%;">
+<ol start="5" type="1">
+<li>Security Safeguards Principle</li>
+<li>Openness Principle</li>
+</ol>
+</div><div class="column" style="width:25%;">
+<ol start="7" type="1">
+<li>Individual Participation Principle</li>
+<li>Accountability principles</li>
+</ol>
+</div></div>
+</section>
+<section id="data-ethics-principles-oecd-1" class="slide level2">
+<h2>Data Ethics Principles (OECD)</h2>
+<ol type="1">
+<li><p><strong>Collection Limitation Principle</strong>: There should be limits to the collection of personal data and any such data should be obtained by lawful and fair means and, where appropriate, with the knowledge or consent of the data subject.</p></li>
+<li><p><strong>Data Quality Principle</strong>: Personal data should be relevant to the purposes for which they are to be used, and, to the extent necessary for those purposes, should be accurate, complete and kept up-to-date.</p></li>
+<li><p><strong>Purpose Specification Principle</strong>: The purposes for which personal data are collected should be specified no later than at the time of data collection and the subsequent use limited to the fulfillment of those purposes or such others as are not incompatible with those purposes and as are specified on each occasion of change of purpose.</p></li>
+</ol>
+</section>
+<section id="data-ethics-principles-oecd-2" class="slide level2">
+<h2>Data Ethics Principles (OECD)</h2>
+<ol start="4" type="1">
+<li><strong>Personal data</strong> should not be disclosed, made available or otherwise used for purposes other than those specified in accordance with Principle 3, except:</li>
+</ol>
+<ol type="a">
+<li><p>with the consent of the data subject; or</p></li>
+<li><p>by the authority of law.</p></li>
+</ol>
+<ol start="5" type="1">
+<li><strong>Security Safeguards Principle</strong>: Personal data should be protected by reasonable security safeguards against such risks as loss or unauthorized access, destruction, use, modification or disclosure of data.</li>
+</ol>
+</section>
+<section id="data-ethics-principles-oecd-3" class="slide level2">
+<h2>Data Ethics Principles (OECD)</h2>
+<ol start="6" type="1">
+<li><p><strong>Openness Principle</strong>: There should be a general policy of openness about developments, practices and policies with respect to personal data. Means should be readily available of establishing the existence and nature of personal data, and the main purposes of their use, as well as the identity and usual residence of the data controller.</p></li>
+<li><p><strong>Individual Participation Principle</strong>: An individual should have the right to obtain from a data controller, or otherwise, confirmation of whether or not the data controller has data relating to them; and to have communicated them that data relating to them.</p></li>
+<li><p><strong>Accountability Principle:</strong> A data controller should be accountable for complying with measures which give effect to the principles stated above.</p></li>
+</ol>
+</section>
+<section id="group-discussion" class="slide level2">
+<h2>Group Discussion</h2>
+<p>How does data science play a role in this example? What <strong>dilemmas</strong> must data scientists consider?</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Discussion (4 minutes)</strong></p>
+</div>
+<div class="callout-content">
+<p>In 2017, Meta announced that they analyze and flag user-generated content related to suicidal intent or risk (e.g., post and comments). Later, Meta announced that the company used the suicide predictions to notify local authorities and that over 100 wellness checks were conducted by law-enforcement. Meta also announced that the suicide detection program would expand across all other countries. In 2018, Meta revealed that they also scan the content of users’ private messages for suicide risk.</p>
+</div>
+</div>
+</div>
+<center>
+<iframe width="320" height="100" src="https://vclock.com/embed/timer/#countdown=00:04:00&amp;enabled=0&amp;seconds=240&amp;theme=0&amp;ampm=1&amp;sound=xylophone" frameborder="0" allowfullscreen="">
+</center>
+</iframe>
+</center></section>
+<section id="ethical-practices-and-considerations" class="slide level2 smaller">
+<h2>Ethical Practices and Considerations</h2>
+<p>To meet data ethic principles and engage in socially-just data science, practitioners (e.g.&nbsp;data scientists, researchers) can practice the following:</p>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Honesty</a></li><li><a href="#tabset-2-2">Understanding</a></li><li><a href="#tabset-2-3">Communication</a></li><li><a href="#tabset-2-4">Reporting</a></li><li><a href="#tabset-2-5">Protection</a></li><li><a href="#tabset-2-6">Cite</a></li><li><a href="#tabset-2-7">Report</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<ul>
+<li>Remain honest about level of competence related skill, content/subject, potential bias, and timeliness.</li>
+</ul>
+</div>
+<div id="tabset-2-2">
+<ul>
+<li>Understand responsibilities to ensure their skills can address the stakeholders (i.e., clients and participants) needs.</li>
+</ul>
+</div>
+<div id="tabset-2-3">
+<ul>
+<li>Communicate the limitations of the research design and analytic approach.</li>
+</ul>
+</div>
+<div id="tabset-2-4">
+<ul>
+<li>When reporting your findings, clearly convey steps, logic, and findings so that other data practitioners and the public understand.</li>
+</ul>
+</div>
+<div id="tabset-2-5">
+<ul>
+<li>Engage in data science practices processes that protect humans and animals and minimize harmful impact</li>
+</ul>
+</div>
+<div id="tabset-2-6">
+<ul>
+<li>Acknowledge the work of other data practitioners and researchers that were used.</li>
+</ul>
+</div>
+<div id="tabset-2-7">
+<ul>
+<li>Address ethical misconduct by reporting to appropriate authority, which will investigate ethical issues and or violations.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="ethical-practices-and-considerations-1" class="slide level2">
+<h2>Ethical Practices and Considerations</h2>
+<p>Algorithms affect the lives of individuals, sometimes in profound ways <br></p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>What are example of algorithms that you’ve encountered in your life which have influenced your life or your behavior?</p>
+</div>
+</div>
+</div>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>What are the ethical practices and considerations that you think the creator of algorithm(s) did or did not take into account?</p>
+</div>
+</div>
+</div>
+</section>
+<section id="case-study-criminal-risk-assessment" class="slide level2">
+<h2>Case Study: Criminal Risk Assessment</h2>
+<ul>
+<li><p>Machine learning is increasingly used to to inform decisions about individuals in the criminal justice system</p>
+<ul>
+<li>Setting bond amounts</li>
+<li>Length of sentence</li>
+</ul></li>
+<li><p>One major component of these decisions is trying to evaluate a defendant’s risk of future crime</p></li>
+<li><p><em>Recidivism</em>: the tendency of a convicted criminal to re-offend.</p></li>
+<li><p>In 2016, <a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing">ProPublica published an a story</a> about one of the most used algorithms called ‘COMPAS’</p></li>
+<li><p><strong>COMPAS</strong> stands for Correctional Offender Management Profiling for Alternative Sanctions, and was mostly used to assess the risk of a pretrial release</p></li>
+<li><p>In their article, they conducted a rigorous analysis of possible bias by analyzing data and COMPAS predictions from more than 10,000 criminal defendants in Broward County, Florida</p></li>
+</ul>
+</section>
+<section id="fairness-transparency" class="slide level2">
+<h2>Fairness &amp; Transparency</h2>
+<ul>
+<li><p><strong>Fairness</strong>: ideally, COMPAS would have the same impact on all demographic subgroups. Probably not possible!</p></li>
+<li><p><strong>Transparency</strong>: COMPAS is a <em>closed-source</em> algorithm. The public is not allowed to see how the algorithm works.</p></li>
+</ul>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>What information about an individual do you think is “fair” to include in an algorithm which predicts recidivism? What information would be “unfair”?</p>
+</div>
+</div>
+</div>
+</section>
+<section id="compas-data" class="slide level2">
+<h2>COMPAS data</h2>
+<p>The risk-scores are derived come from answers to a 137 question survey and the defendants criminal record.</p>
+<p><strong>Predictors</strong> used by COMPAS include:</p>
+<ul>
+<li><p>Prior arrests and convictions (and if any friends had priors)</p></li>
+<li><p>Address, GPA, wealth</p></li>
+<li><p>If the defendant’s parents separated</p></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>Purportedly, race is not used as a predictor.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="recidivism-data" class="slide level2">
+<h2>Recidivism Data</h2>
+<p>There are 6172 observations in the data we’ll analyze. 44.6% of individuals received a high risk score.</p>
+<div>
+
+</div>
+<div id="31a78c5b" class="cell quarto-layout-panel" data-execution_count="3" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+        <script type="text/javascript">
+        window.PlotlyConfig = {MathJaxConfig: 'local'};
+        if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}
+        </script>
+        <script type="module">import "https://cdn.plot.ly/plotly-3.1.0.min"</script>
+        
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.1.0.min.js" integrity="sha256-Ei4740bWZhaUTQuD6q9yQlgVCMPBz6CZWhevDYPv93A=" crossorigin="anonymous"></script>                <div id="9496d06d-8310-412c-a93c-e68be6d70325" class="plotly-graph-div" style="height:525px; width:550px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("9496d06d-8310-412c-a93c-e68be6d70325")) {                    Plotly.newPlot(                        "9496d06d-8310-412c-a93c-e68be6d70325",                        [{"cells":{"align":"center","fill":{"color":"white"},"font":{"size":16},"height":50,"values":[["25 - 45","Greater than 45","Less than 25"],[0.57,0.21,0.22]]},"columnwidth":[2,1],"header":{"align":"center","fill":{"color":"#F9E3D6"},"font":{"size":24},"height":50,"values":["Age Group","Proportion"]},"type":"table"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"width":550},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('9496d06d-8310-412c-a93c-e68be6d70325');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.1.0.min.js" integrity="sha256-Ei4740bWZhaUTQuD6q9yQlgVCMPBz6CZWhevDYPv93A=" crossorigin="anonymous"></script>                <div id="dad9abfe-66b8-4f7e-b9a1-fd314107c615" class="plotly-graph-div" style="height:525px; width:500px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("dad9abfe-66b8-4f7e-b9a1-fd314107c615")) {                    Plotly.newPlot(                        "dad9abfe-66b8-4f7e-b9a1-fd314107c615",                        [{"cells":{"align":"center","fill":{"color":"white"},"font":{"size":16},"height":50,"values":[["African-American","Asian","Caucasian","Hispanic","Native American","Other"],[0.51,0.01,0.34,0.08,0.0,0.06]]},"columnwidth":[2,1],"header":{"align":"center","fill":{"color":"#F9E3D6"},"font":{"size":24},"height":50,"values":["Race","Proportion"]},"type":"table"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"width":500},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('dad9abfe-66b8-4f7e-b9a1-fd314107c615');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+</div>
+<!-- ## Predictions -->
+<!-- ```{r} -->
+<!-- compas_scores |> filter(race %in% c("African-American", "Caucasian")) %>% ggplot() + geom_histogram(aes(x=decile_score)) + facet_wrap(~race) + theme_bw(base_size=16) + xlab("Decile Score") -->
+<!-- ``` -->
+</section>
+<section id="predictions" class="slide level2">
+<h2>Predictions</h2>
+<ul>
+<li><p>The COMPAS algorithm is <em>closed-source</em> but we can learn about the algorithm by <strong>fitting our own model</strong> to the COMPAS predictions.</p></li>
+<li><p>Predict COMPAS score (“high” vs “low” risk) using data about the defendants collected by ProPublica.<br>
+</p></li>
+<li><p>Data includes age, race, and prior counts</p></li>
+<li><p>Compare the predictions for different inputs to the model</p></li>
+</ul>
+</section>
+<section id="predictions-1" class="slide level2">
+<h2>Predictions</h2>
+<div id="f2f90e81" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-stdout">
+<pre><code>Optimization terminated successfully.
+         Current function value: 0.511094
+         Iterations 6
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:                      y   No. Observations:                 6172
+Model:                          Logit   Df Residuals:                     6162
+Method:                           MLE   Df Model:                            9
+Date:                Sat, 23 Aug 2025   Pseudo R-squ.:                  0.2563
+Time:                        18:15:26   Log-Likelihood:                -3154.5
+converged:                       True   LL-Null:                       -4241.7
+Covariance Type:            nonrobust   LLR p-value:                     0.000
+===============================================================================================
+                                  coef    std err          z      P&gt;|z|      [0.025      0.975]
+-----------------------------------------------------------------------------------------------
+const                          -0.7715      0.083     -9.333      0.000      -0.934      -0.609
+priors_count                    0.3013      0.011     27.374      0.000       0.280       0.323
+gender_factor_Male             -0.1436      0.078     -1.840      0.066      -0.297       0.009
+age_factor_Greater than 45     -1.4504      0.099    -14.688      0.000      -1.644      -1.257
+age_factor_Less than 25         1.4264      0.074     19.212      0.000       1.281       1.572
+race_factor_Asian              -0.8241      0.479     -1.722      0.085      -1.762       0.114
+race_factor_Caucasian          -0.4884      0.068     -7.140      0.000      -0.622      -0.354
+race_factor_Hispanic           -0.9369      0.122     -7.709      0.000      -1.175      -0.699
+race_factor_Native American     0.7205      0.740      0.974      0.330      -0.730       2.171
+race_factor_Other              -1.3096      0.156     -8.370      0.000      -1.616      -1.003
+===============================================================================================</code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Note</strong></p>
+</div>
+<div class="callout-content">
+<p>The classifier we used here is called a “logistic regression”. You’ll learn much more about this in later statistics courses like PSTAT 127.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="exploring-predictions" class="slide level2">
+<h2>Exploring Predictions</h2>
+<ul>
+<li><p>Use our classifier to predict the probability that COMPAS would give an individual a high score</p></li>
+<li><p>Looks at inputs which are identical except in one characteristic</p></li>
+<li><p>Compare predictions for different ages and different races</p></li>
+</ul>
+</section>
+<section id="the-importance-of-age" class="slide level2">
+<h2>The importance of age</h2>
+<p>Compare predictions for two hypothetical individuals identical in all characteristics except age.</p>
+<p><br></p>
+<div id="a89c21b4" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.1.0.min.js" integrity="sha256-Ei4740bWZhaUTQuD6q9yQlgVCMPBz6CZWhevDYPv93A=" crossorigin="anonymous"></script>                <div id="4fe28cd3-d184-4f1a-b230-8464e9679710" class="plotly-graph-div" style="height:525px; width:1000px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("4fe28cd3-d184-4f1a-b230-8464e9679710")) {                    Plotly.newPlot(                        "4fe28cd3-d184-4f1a-b230-8464e9679710",                        [{"cells":{"align":"center","fill":{"color":[["white","white"],["white","white"],["#F9E3D6","#F9E3D6"],["white","white"],["white","white"]]},"font":{"size":16},"height":50,"values":[["Male","Male"],["25 - 45","Greater than 45"],["African-American","African-American"],[0,0],[0.286,0.086]]},"columnwidth":[0.3,0.3,0.45,0.3,0.4],"header":{"align":"center","fill":{"color":"#F9E3D6"},"font":{"size":24},"height":60,"values":["Sex","Age","Race","Priors","Prob. High"]},"type":"table"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"width":1000},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('4fe28cd3-d184-4f1a-b230-8464e9679710');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+</section>
+<section id="the-importance-of-race" class="slide level2">
+<h2>The importance of race</h2>
+<p>Compare predictions for two hypothetical individuals identical in all characteristics except race.</p>
+<p><br></p>
+<div id="44e93a89" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.1.0.min.js" integrity="sha256-Ei4740bWZhaUTQuD6q9yQlgVCMPBz6CZWhevDYPv93A=" crossorigin="anonymous"></script>                <div id="0e702999-205f-44cc-8d9e-47c186496f62" class="plotly-graph-div" style="height:525px; width:1000px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("0e702999-205f-44cc-8d9e-47c186496f62")) {                    Plotly.newPlot(                        "0e702999-205f-44cc-8d9e-47c186496f62",                        [{"cells":{"align":"center","fill":{"color":[["white","white"],["white","white"],["#F9E3D6","#F9E3D6"],["white","white"],["white","white"]]},"font":{"size":18},"height":50,"values":[["Male","Male"],["25 - 45","25 - 45"],["African-American","Caucasian"],[0,0],[0.286,0.197]]},"columnwidth":[0.6,0.6,0.8,0.4,0.4],"header":{"align":"center","fill":{"color":"#F9E3D6"},"font":{"size":24},"height":50,"values":["Sex","Age Group","Race","Priors","Prob. High"]},"type":"table"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"width":1000},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('0e702999-205f-44cc-8d9e-47c186496f62');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Important</strong></p>
+</div>
+<div class="callout-content">
+<p>But “race” is purportedly <strong>not an input</strong> to COMPAS!</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="proxy-variables" class="slide level2">
+<h2>Proxy Variables</h2>
+<p>Just because <code>race</code> isn’t an input to the algorithm does not mean the algorithm makes the same predictions for all race groups!</p>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>How might the COMPAS algorithm implicitly factor racial information into its predictions even though <code>race</code> is not an input?</p>
+</div>
+</div>
+</div>
+</section>
+<section id="evaluating-mis-classifications" class="slide level2">
+<h2>Evaluating Mis-classifications</h2>
+
+<img data-src="../figures/confusion_matrix.png" class="r-stretch"><ul>
+<li>Accuracy:TP + FP / n</li>
+<li>False positive rate (FPR): FP / (FP + TN)</li>
+<li>False negative rate (FNR): FN / (FN + TP)</li>
+</ul>
+</section>
+<section id="examining-fpr-and-fnr" class="slide level2">
+<h2>Examining FPR and FNR</h2>
+<ul>
+<li><p>ProPublica provides a binary variable named <code>two_year_recid</code> which indicates whether an individual committed a new crime within two years of the screening or not.</p></li>
+<li><p>We can compare the COMPAS risk predictions to the <code>two_year_recid</code> variable which we’ll assume is our “ground truth” to compute FPR and FNR</p></li>
+<li><p>There is a tradeoff between FPR and FNR!</p></li>
+</ul>
+</section>
+<section id="examining-fpr-and-fnr-1" class="slide level2">
+<h2>Examining FPR and FNR</h2>
+<div id="2efb15d9" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href=""></a><span class="co"># Create a contingency table</span></span>
+<span id="cb2-2"><a href=""></a><span class="bu">print</span>(pd.crosstab(compas_scores[<span class="st">'score_factor'</span>], compas_scores[<span class="st">'two_year_recid'</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>two_year_recid     0     1
+score_factor              
+HighScore       1018  1733
+LowScore        2345  1076</code></pre>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li>FPR: 1018 / (2345 + 1018) = 0.30</li>
+<li>FNR: 1076 / (1733+1076) = 0.38</li>
+<li>Accuracy: (2345 + 1733) / n = 0.66</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Question</strong></p>
+</div>
+<div class="callout-content">
+<p>What is the meaning of FPR and FNR in this context? Is one worse than the other?</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fpr-and-fnr-for-african-americans" class="slide level2">
+<h2>FPR and FNR for African-Americans</h2>
+<div id="c19cbb07" class="cell" data-attr-output="style='text-align: center; font-size: 0.75em'" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href=""></a><span class="co"># Filter the data for African-American race</span></span>
+<span id="cb4-2"><a href=""></a>filtered_data <span class="op">=</span> compas_scores[compas_scores[<span class="st">'race'</span>] <span class="op">==</span> <span class="st">'African-American'</span>]</span>
+<span id="cb4-3"><a href=""></a></span>
+<span id="cb4-4"><a href=""></a><span class="co"># Create a contingency table for score_factor and two_year_recid</span></span>
+<span id="cb4-5"><a href=""></a><span class="bu">print</span>(pd.crosstab(filtered_data[<span class="st">'score_factor'</span>], filtered_data[<span class="st">'two_year_recid'</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>two_year_recid    0     1
+score_factor             
+HighScore       641  1188
+LowScore        873   473</code></pre>
+</div>
+</div>
+<p><br></p>
+<p>FPR = <span class="math inline">\(641 / (873 + 641) = 0.57\)</span></p>
+<p>FNR = <span class="math inline">\(473 / (473 + 1188) = 0.28\)</span></p>
+<p>ACC = <span class="math inline">\((999+414)/(999+408+414+282) = 0.65\)</span></p>
+</section>
+<section id="fpr-and-fnr-for-caucasians" class="slide level2">
+<h2>FPR and FNR for Caucasians</h2>
+<div id="601c388f" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href=""></a><span class="co"># Filter the data for Caucasian race</span></span>
+<span id="cb6-2"><a href=""></a>filtered_data <span class="op">=</span> compas_scores[compas_scores[<span class="st">'race'</span>] <span class="op">==</span> <span class="st">'Caucasian'</span>]</span>
+<span id="cb6-3"><a href=""></a><span class="bu">print</span>(pd.crosstab(filtered_data[<span class="st">'score_factor'</span>], filtered_data[<span class="st">'two_year_recid'</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>two_year_recid    0    1
+score_factor            
+HighScore       282  414
+LowScore        999  408</code></pre>
+</div>
+</div>
+<p><br></p>
+<p>FPR = <span class="math inline">\(282 / (282 + 999) = 0.22\)</span></p>
+<p>FNR = <span class="math inline">\(408 / (408 + 414) = 0.50\)</span></p>
+<p>ACC = <span class="math inline">\((999+414)/(999+408+414+282) = 0.67\)</span></p>
+</section>
+<section id="fpr-and-fnr" class="slide level2">
+<h2>FPR and FNR</h2>
+<div id="c34f0694" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div>            <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG"></script><script type="text/javascript">if (window.MathJax && window.MathJax.Hub && window.MathJax.Hub.Config) {window.MathJax.Hub.Config({SVG: {font: "STIX-Web"}});}</script>                <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.1.0.min.js" integrity="sha256-Ei4740bWZhaUTQuD6q9yQlgVCMPBz6CZWhevDYPv93A=" crossorigin="anonymous"></script>                <div id="94c768d8-4e68-4ebe-aadb-4d53c6c892de" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("94c768d8-4e68-4ebe-aadb-4d53c6c892de")) {                    Plotly.newPlot(                        "94c768d8-4e68-4ebe-aadb-4d53c6c892de",                        [{"cells":{"align":"center","fill":{"color":[["white","white","white"],["rgba(255, 0, 0, 0.6166666666666665)","rgba(255, 0, 0, 0.03333333333333331)","rgba(255, 0, 0, 0.1666666666666666)"],["rgba(255, 0, 0, 0.13333333333333333)","rgba(255, 0, 0, 0.4999999999999999)","rgba(255, 0, 0, 0.29999999999999993)"],["rgba(255, 0, 0, 0.30000000000000004)","rgba(255, 0, 0, 0.3400000000000001)","rgba(255, 0, 0, 0.32000000000000006)"]]},"font":{"size":20},"height":40,"values":[["African-American","Caucasian","All"],[0.57,0.22,0.3],[0.28,0.5,0.38],[0.65,0.67,0.66]]},"header":{"align":"center","fill":{"color":"red"},"font":{"size":24},"values":["Group","FPR","FNR","ACC"]},"type":"table"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}}},                        {"responsive": true}                    ).then(function(){
+                            
+var gd = document.getElementById('94c768d8-4e68-4ebe-aadb-4d53c6c892de');
+var x = new MutationObserver(function (mutations, observer) {{
+        var display = window.getComputedStyle(gd).display;
+        if (!display || display === 'none') {{
+            console.log([gd, 'removed!']);
+            Plotly.purge(gd);
+            observer.disconnect();
+        }}
+}});
+
+// Listen for the removal of the full notebook cells
+var notebookContainer = gd.closest('#notebook-container');
+if (notebookContainer) {{
+    x.observe(notebookContainer, {childList: true});
+}}
+
+// Listen for the clearing of the current output cell
+var outputEl = gd.closest('.output');
+if (outputEl) {{
+    x.observe(outputEl, {childList: true});
+}}
+
+                        })                };            </script>        </div>
+</div>
+</div>
+<p>Similar accuracy across the two race groups are attained in very different ways!</p>
+</section>
+<section id="putting-a-human-face-on-it" class="slide level2">
+<h2>Putting a human face on it</h2>
+<p>ProPublica discusses two different incidents in Broward County:</p>
+<ol type="1">
+<li><p>In 2014, an 18-year-old girl, Brisha Borden, and her friend grabbed an unlocked bicycle and scooter and rode them down the street, then abandoning it. Police arrived and arrested the girls for burglary and theft of $80 worth of goods.</p></li>
+<li><p>In 2013, a 41-year-old man, Vernon Prater, was caught shoplifting $86 worth of goods from Home Depot. He had prior convictions for armed robbery and had previously served 5 years in prison.</p></li>
+</ol>
+</section>
+<section id="putting-a-human-face-on-it-1" class="slide level2">
+<h2>Putting a human face on it</h2>
+<center>
+<img data-src="../figures/petty_theft_arrests1.png" style="width:50.0%">
+</center>
+<center>
+<a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing%5D">source</a>
+</center>
+</section>
+<section id="putting-a-human-face-on-it-2" class="slide level2">
+<h2>Putting a human face on it</h2>
+<center>
+<img data-src="../figures/petty_theft_arrests2.png" style="width:50.0%">
+</center>
+<center>
+<a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing%5D">source</a>
+</center>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li><p>We have highlighted unfairness in the COMPAS algorithm</p></li>
+<li><p>Understanding the root causes and devising potential solutions is non-trivial. There are often unintended consequences that data scientists must grapple with.</p></li>
+<li><p>Ethical data science and fairness in machine learning is challenging but essential!</p></li>
+<li><p>Read more</p>
+<ul>
+<li><a href="https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing">The ProPublica article, “Machine Bias”</a>,</li>
+<li><a href="https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm">Methodology for the analyses used in “Machine Bias”</a></li>
+<li><a href="https://afraenkel.github.io/fairness-book/content/04-compas.html">Fairness and Algorithmic Decision Making - COMPAS Chapter</a></li>
+</ul></li>
+</ul>
+</section>
+<section>
+<section id="case-study-swains-jury-panel" class="title-slide slide level1 center">
+<h1>Case study: Swain’s Jury Panel</h1>
+
+</section>
+<section id="swains-jury-panel" class="slide level2">
+<h2>Swain’s Jury Panel</h2>
+<p>The following case study highlights the ethical importance and implications surrounding sampling. This case study and discussion is an extension of <a href="http://www.data8.org">Data8</a>’s example.</p>
+<ul>
+<li><p>In 1962, Robert Swain was charged and convicted with committing a crime in Alabama’s Talladega County, which had the possibility of a death sentence.</p></li>
+<li><p>Prior to his trial and after his conviction, his lawyers argued that Black citizens of Talladega were systematically excluded from grand juries such as Swain’s case <span class="citation" data-cites="carrington2023">(<a href="#/references" role="doc-biblioref" onclick="">Carrington 2023</a>)</span>, which violated the U.S. Constitution to an impartial jury.</p></li>
+<li><p>Note, only men 21 years and older were allowed to serve as jury members at the time.</p></li>
+<li><p>Jurors are selected from a <strong>jury panel of 100 citizens</strong> who should be representative of a regions population.</p></li>
+</ul>
+</section>
+<section id="jury-panel-demographics" class="slide level2">
+<h2>Jury Panel demographics</h2>
+<ul>
+<li><p>During Swain’s trial, 26% of males in Talladega County were Black, however the jury panel consisted of <strong>8</strong> Black males, in other words Black males made up 8% of the jury panel. None actually served on the final jury.</p></li>
+<li><p>Swain’s lawyers appealed his conviction arguing that he was not given an opportunity to fair trail due lack of representation of Black males on the jury panel.</p></li>
+<li><p>His appeal went all the way up to the Supreme Court, who decided that the percent difference was small and that there was no attempt by the State of Alabama to exclude Black citizens.</p></li>
+<li><p>Using <strong>simulation</strong>, we can evaluate the number of Black citizens in jury panels if they were randomly selected from a population that consisted of 26% Black and 74% White males. We can also evaluate a distribution in which 8% of the population, on average, were Black males.</p></li>
+</ul>
+</section>
+<section id="jury-pool" class="slide level2">
+<h2>Jury Pool</h2>
+<p>The statistic of interest in these simulations is the count of Black males if randomly selected from a population similar to Talladega County and a population with an 8% Black male proportion. Each randomly selected sample consisted of 100 individuals, representing the number of citizens on a jury panel. There were 10,000 iterations of random selection.</p>
+<div id="efe184c1" class="cell" data-fig-height="3" data-fig-width="6" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="pstat-188-week4_files/figure-revealjs/cell-12-output-1.png" class="quarto-figure quarto-figure-center" width="822" height="454"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="jury-pool-1" class="slide level2">
+<h2>3. Jury Pool</h2>
+<div class="Columns">
+<div class="column" style="width:40%;">
+<p>Consider the following hypothetical scenario.</p>
+<ul>
+<li><p>What if the panel of jurors consisted of 15 Black males?</p></li>
+<li><p>Would the count of Black panelist lead to fair panel or impartial jury?</p></li>
+<li><p>Would you consider a panel of 21 Black males fair?</p></li>
+<li><p>Take 5 minutes to discuss as a class your conclusion, remaining questions, and thoughts.</p></li>
+</ul>
+<iframe width="320" height="100" src="https://vclock.com/embed/timer/#countdown=00:05:00&amp;enabled=0&amp;seconds=300&amp;theme=0&amp;ampm=1&amp;sound=xylophone" frameborder="0" allowfullscreen="">
+</iframe>
+</div><div class="column" style="width:60%;">
+<div id="be74d8d6" class="cell" data-fig-height="6" data-fig-width="6" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="pstat-188-week4_files/figure-revealjs/cell-13-output-1.png" width="470" height="566"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="discussion-questions" class="slide level2">
+<h2>Discussion questions:</h2>
+<ul>
+<li><p>What are some advantages of random sampling in this context? How might random sampling promote ethical practices?</p></li>
+<li><p>You can use use the jury panel examples to discuss how random sampling only leads to racial balance <strong>on average</strong> and how chance variability can lead to imbalance.</p></li>
+<li><p>How many black males need to be on the panel for you to be convinced that the sampling process was followed fairly? Can use this question to motivate the gray area in defining notions of significance.</p></li>
+<li><p>Is random sampling the fairest way to select the panel? Alternative: can use some kind of conditional random sampling to explicitly balance along certain demographic characteristiscs.</p></li>
+</ul>
+</section>
+<section id="sampling-bias" class="slide level2">
+<h2>Sampling Bias</h2>
+<p>What is sampling bias?</p>
+<ul>
+<li><p>The outcome of a sampling technique that suggests that not every member of the population has an equal opportunity of being in a sample.</p></li>
+<li><p>Consequently, statistical bias in estimates may be observed. In other words, estimates cannot be trusted as reflecting or representing the population.</p></li>
+<li><p><strong>Not investigating and addressing sampling issues raises ethical concerns</strong></p></li>
+</ul>
+</section>
+<section id="sampling-and-representativeness" class="slide level2">
+<h2>Sampling and Representativeness</h2>
+<ul>
+<li><p>After using a sampling mechanism, it is important to determine how well the sample represents the population <span class="citation" data-cites="kotu2019">(<a href="#/references" role="doc-biblioref" onclick="">Kotu and Deshpande 2019</a>)</span>.</p></li>
+<li><p>Typically, using a random sampling approach lessens the chance of omitting or over-sampling groups that make up the population of interest.</p></li>
+<li><p>The law of large numbers suggests that the larger the random sample the more likely sample will represent the population of interest compared to sampling a small number of individuals <span class="citation" data-cites="dinov2009">(<a href="#/references" role="doc-biblioref" onclick="">Dinov, Christou, and Gould 2009</a>)</span>.</p></li>
+<li><p>Sampling frame and sample size matters! Ensure that the sampling frame is representative of population and that the final sample is characteristically similar to the population, even in the presence of a large sample <span class="citation" data-cites="sauro2012">(<a href="#/references" role="doc-biblioref" onclick="">Sauro and Lewis 2012</a>)</span>.</p></li>
+</ul>
+</section>
+<section id="observational-studies" class="slide level2">
+<h2>Observational Studies</h2>
+<ul>
+<li><p>Based on observing people or other units in an environment in which behaviors naturally occur</p></li>
+<li><p>In general, data scientists should pay special attention to observations recruitment, study procedures, and survey/assessment selection.</p></li>
+<li><p>Since observational studies are not true experiments, researchers and data scientists can expect <strong>bias</strong> in samples and lower confidence in analytic findings along with other limitations <a href="https://kpu.pressbooks.pub/psychmethods4e/chapter/overview-of-non-experimental-research/">Jhangiani, Cuttler, Leighton, 2019</a>.</p></li>
+<li><p>Ethical practices that data scienists can engage while working with data from observational studies include: - Communicating with stakeholders that findings are not absolute truths. - Educating readers that correlation does not equal causation - Use statistical techniques, such as weights or conservative statistics, to deal with unequal representation and analytical confidence.</p></li>
+</ul>
+</section>
+<section id="uc-berkeley-graduate-admissions" class="slide level2">
+<h2>UC Berkeley Graduate Admissions</h2>
+<div id="fa72bed8" class="cell" data-execution_count="14">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="pstat-188-week4_files/figure-revealjs/cell-14-output-1.png" class="quarto-figure quarto-figure-center" width="666" height="528"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="possible-explanations-for-the-discrepancy" class="slide level2">
+<h2>Possible explanations for the discrepancy</h2>
+<p>Possibilities:</p>
+<ul>
+<li>The difference is due to random chance (sampling variability)</li>
+<li>Female applicants were less qualified than male applicants</li>
+<li>UC Berkeley was biased against women</li>
+<li>Confounding or lurker variables (the real explanation, described in the following slides)</li>
+</ul>
+<p>This example can also fit into the <a href="https://github.com/SCC4DS/data-science-ethics/tree/main/visualization">storytelling and visualization module</a> to highlight the number of different possible explanations for the same (limited) set of data.</p>
+</section>
+<section id="uc-berkeley-graduate-admissions-1" class="slide level2">
+<h2>UC Berkeley Graduate Admissions</h2>
+<div id="b3f2c825" class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="pstat-188-week4_files/figure-revealjs/cell-15-output-1.png" class="quarto-figure quarto-figure-center" width="950" height="591"></p>
+</figure>
+</div>
+</div>
+</div>
+<center>
+How is this possible?
+</center>
+</section>
+<section id="berkeley-gender-discrimination" class="slide level2">
+<h2>Berkeley Gender Discrimination</h2>
+<div id="4d3e1d7a" class="cell" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="pstat-188-week4_files/figure-revealjs/cell-16-output-1.png" width="951" height="565"></p>
+</figure>
+</div>
+</div>
+</div>
+<!-- ## Berkeley Gender Discrimination {.smaller} -->
+<!-- | Department | All |  | Men |  | Women |  | -->
+<!-- |------------|------|------|------|------|---------|------| -->
+<!-- |            | Applicants | Admitted | Applicants | Admitted | Applicants | Admitted | -->
+<!-- | A | 933 | 64% | <span style="background-color: #FFEB99">825</span> | 62% | 108 | <span style="background-color: #90EE90">82%</span> | -->
+<!-- | B | 585 | 63% | <span style="background-color: #FFEB99">560</span> | 63% | 25 | <span style="background-color: #90EE90">68%</span> | -->
+<!-- | C | 918 | 35% | 325 | <span style="background-color: #90EE90">37%</span> | <span style="background-color: #FFEB99">593</span> | 34% | -->
+<!-- | D | 792 | 34% | <span style="background-color: #FFEB99">417</span> | 33% | 375 | <span style="background-color: #90EE90">35%</span> | -->
+<!-- | E | 584 | 25% | 191 | <span style="background-color: #90EE90">28%</span> | <span style="background-color: #FFEB99">393</span> | 24% | -->
+<!-- | F | 714 | 6% | <span style="background-color: #FFEB99">373</span> | 6% | 341 | <span style="background-color: #90EE90">7%</span> | -->
+<!-- | Total | 4526 | 39% |  <span style="background-color: #FFEB99">2691</span> |  <span style="background-color: #90EE90">45%</span> | 1835 | 30% | -->
+<!-- - <span style="background-color: #90EE90">Green</span>: greater percentage of successful applicants than  -->
+<!-- the other gender -->
+<!-- - <span style="background-color: #FFEB99">Yellow</span>: greater number of applicants than the other gender -->
+<p>For the previous plots, point out that that women tended to apply to departments that had much lower acceptance rate. There was no major gender differences, once accounting for departmental preference.</p>
+</section>
+<section id="simpsons-paradox" class="slide level2">
+<h2>Simpson’s Paradox</h2>
+<ul>
+<li><p>Simpson’s Paradox is a statistical phenomenon in which a trend that appears across multiple subgroups tends to reverse or disappear when the groups are combined.</p></li>
+<li><p>Correlations between variables can exist for many different reasons. Sometimes correlation is due to some kind of causation, but often there is a simple explanation related to confounding variables or selection effects. Stratifying according to confounding variables can make associations disappear.</p></li>
+<li><p>Randomized control trials balance balance confounders (e.g.&nbsp;departmental preference) across groups, but aren’t always ethically feasible.</p></li>
+<li><p>Simpson’s paradox highlights one way in which statistics (from observational data) can be misused or misinterpreted.</p></li>
+</ul>
+</section>
+<section id="summary-discussion-questions" class="slide level2">
+<h2>Summary discussion questions</h2>
+<ul>
+<li><p>Discuss some of the tradeoffs between conducting a randomized experiment and using observational data.</p></li>
+<li><p>What are the ethical benefits and barriers in running randomized experiments?</p>
+<ul>
+<li>Pro: Results will reflect the population (on average)</li>
+<li>Challenges: previously discussed issues with the ethics of assigning treatments</li>
+</ul></li>
+<li><p>What are the ethical concerns associated with “natural experiments”?</p>
+<ul>
+<li>Data collection &amp; privacy concerns</li>
+<li>Dangers in drawing conclusions with reasoning over relevant confounders. May not know what confounders to include. Expertise needed to reason about results carefully.</li>
+<li>Can increase prevalance of misinformation or misleading conclusions if not reported carefully.</li>
+</ul></li>
+</ul>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-americanstatisticalassociation2022a" class="csl-entry" role="listitem">
+American Statistical Association. 2022. <span>“Ethical Guidelines for Statistical Practice.”</span>
+</div>
+<div id="ref-carrington2023" class="csl-entry" role="listitem">
+Carrington, Tucker. 2023. <span>“Annual Review of Criminal Procedure.”</span> <em>The Georgetown Law Journal</em> 52.
+</div>
+<div id="ref-dinov2009" class="csl-entry" role="listitem">
+Dinov, Ivo D., Nicolas Christou, and Robert Gould. 2009. <span>“Law of Large Numbers: The Theory, Applications and Technology-Based Education.”</span> <em>Journal of Statistics Education</em> 17 (1): 1. <a href="https://doi.org/10.1080/10691898.2009.11889499">https://doi.org/10.1080/10691898.2009.11889499</a>.
+</div>
+<div id="ref-froomkin2019" class="csl-entry" role="listitem">
+Froomkin, A Michael. 2019. <span>“Big Data: Destroyer of Informed Consent.”</span> <em>BIG DATA</em>.
+</div>
+<div id="ref-kotu2019" class="csl-entry" role="listitem">
+Kotu, Vijay, and Bala Deshpande. 2019. <span>“Data Science Process.”</span> In, 19–37. Elsevier. <a href="https://doi.org/10.1016/B978-0-12-814761-0.00002-2">https://doi.org/10.1016/B978-0-12-814761-0.00002-2</a>.
+</div>
+<div id="ref-oecd2002" class="csl-entry" role="listitem">
+OECD. 2002. <em>OECD Guidelines on the Protection of Privacy and Transborder Flows of Personal Data</em>. OECD. <a href="https://doi.org/10.1787/9789264196391-en">https://doi.org/10.1787/9789264196391-en</a>.
+</div>
+<div id="ref-sauro2012" class="csl-entry" role="listitem">
+Sauro, Jeff, and James R. Lewis. 2012. <em>Quantifying the User Experience: Practical Statistics for User Research</em>. Chantilly, UNITED STATES: Elsevier Science &amp; Technology. <a href="http://ebookcentral.proquest.com/lib/ucsb-ebooks/detail.action?docID=872581">http://ebookcentral.proquest.com/lib/ucsb-ebooks/detail.action?docID=872581</a>.
+</div>
+<div id="ref-sharp1928a" class="csl-entry" role="listitem">
+Sharp, Frank C. 1928. <span>“The Problem of Ethics.”</span> In, 3–20. The Century Philosophy Series. New York, NY: The Century Co.
+</div>
+<div id="ref-weiss1990" class="csl-entry" role="listitem">
+Weiss, Eric A. 1990. <span>“The XXII Self-Assessment: The Ethics of Computing.”</span> <em>Communications of the ACM</em> 33 (11): 110–32. <a href="https://doi.org/10.1145/92755.92780">https://doi.org/10.1145/92755.92780</a>.
+</div>
+</div>
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="pstat-188-week4_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="pstat-188-week4_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="pstat-188-week4_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="pstat-188-week4_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="pstat-188-week4_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="pstat-188-week4_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="pstat-188-week4_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="pstat-188-week4_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="pstat-188-week4_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="pstat-188-week4_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
