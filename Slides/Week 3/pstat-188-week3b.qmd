@@ -106,6 +106,7 @@ nasa_data_long['Date'] = pd.to_datetime(
 nasa_data_long['Temperature_Anomaly'] = (nasa_data_long['Temperature_Anomaly']).astype(float)
 
 nasa_data_long['Temperature_Average'] = (nasa_data_long['Temperature_Anomaly'] + 14) * 1.8 + 32
+nasa_data_long = nasa_data_long.sort_values(by='Date')
 
 # Create the interactive line plot with Plotly Express
 fig = px.line(nasa_data_long, x='Date', y='Temperature_Average')
@@ -960,7 +961,7 @@ Usually figure defaults look fine on your IDE but render **too small** when grap
 
 ::: {.column width=45%}
 
-These labels are legible, but still too small -- they take up a minimum of space in the figure.
+These labels are legible, but still *too small* -- they take up a minimum of space in the figure.
 
 ![Unbalanced text/graphic/whitespace](../figures/Aus-athletes-ugly-1.png)
 
@@ -978,7 +979,7 @@ But don't overdo it.
 
 ## Sizing
 
-Use larger labels than you think you'll need.
+Use *larger labels* than you think you'll need.
 
 ![Balanced](../figures/Aus-athletes-good-1.png)
 
@@ -1001,14 +1002,14 @@ Series from [NYC Life Expectancy Dropped 4.6 Years in 2020](https://www.nytimes.
 :::
 
 ::: {.column width=40%}
-Positive:
+**Positive**:
 
 * effective use of labels
 * effective use of highlighting
 * well-proportioned
 * clean axes
 
-Negative:
+**Negative**:
 
 * COVID spike looks minimal, contrary to story?
 * the most striking feature of the plot is the time trend and variance stabilization 
