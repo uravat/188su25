@@ -1,6 +1,5 @@
 ---
 title: "PSTAT 188: Introduction to Ethics in Data Science"
-subtitle: "including Recidivism Case Study via Python"
 author: Mike Ludkovski (based on materials by Alex Franks & Netasha Pizano)
 format:
   revealjs: 
@@ -25,14 +24,14 @@ import IPython.display as display
 2.  Ethical issues related to computers and data
 3.  Case study: COMPAS recidivism
 4.  Case study: Swain's Jury
-5.  Case study: Simpson's paradox 
+5.  Case study: UCB Admissions 
 
 
 
 ## Defining Ethics
 
 "The subject matter of ethics is supplied by two intimately related terms, right and good" [@sharp1928a].
-
+`
 -   Definition:
     -   The judgment upon actions which are categorized as right or wrong
     -   The societal use of terms good and bad
@@ -333,24 +332,9 @@ compas_scores_grouped_age['proportion'] = compas_scores_grouped_age['count'] / l
 compas_scores_grouped_age['proportion'] = compas_scores_grouped_age['proportion'].round(2)
 
 # Display table using tabulate for formatting
-#print(tabulate(compas_scores_grouped_age[['age_cat', 'proportion']],
-#               headers=["Age Group", "Proportion"],
-#               tablefmt="fancy_grid"))
-
-header = dict(values=["Age Group", "Proportion"],
-              fill_color='#F9E3D6',
-              align='center',
-              font=dict(size=24),height=50)
-
-cells = dict(values=[compas_scores_grouped_age['age_cat'], compas_scores_grouped_age['proportion']],
-             align='center',
-             fill_color='white',
-             font=dict(size=16), height=50)
-
-# Create the table using Plotly's go.Table
-table = go.Figure(data=[go.Table(header=header, cells=cells,columnwidth=[2,1])])
-table.update_layout(width=550)
-table.show()
+from itables import show
+df = pd.DataFrame({'Age Group': compas_scores_grouped_age['age_cat'], 'Proportion': compas_scores_grouped_age['proportion']})
+show(df)
 
 # Group by 'race' and calculate proportions
 compas_scores_grouped_race = (
@@ -367,23 +351,8 @@ compas_scores_grouped_race['proportion'] = compas_scores_grouped_race['count'] /
 compas_scores_grouped_race['proportion'] = compas_scores_grouped_race['proportion'].round(2)
 
 # Display table using tabulate for formatting
-#print(tabulate(compas_scores_grouped_race[['race', 'proportion']],
-#               headers=["Race", "Proportion"],
-#               tablefmt="fancy_grid"))
-header = dict(values=["Race", "Proportion"],
-              fill_color='#F9E3D6',
-              align='center',
-              font=dict(size=24),height=50)
-
-cells = dict(values=[compas_scores_grouped_race['race'], compas_scores_grouped_race['proportion']],
-             align='center',
-             fill_color='white',
-             font=dict(size=16), height=50)
-
-# Create the table using Plotly's go.Table
-table = go.Figure(data=[go.Table(header=header, cells=cells,columnwidth=[2,1])])
-table.update_layout(width=500)
-table.show()
+df = pd.DataFrame({'Race': compas_scores_grouped_race['race'], 'Proportion': compas_scores_grouped_race['proportion']})
+show(df)
 
 ```
 <!-- ## Predictions -->
@@ -492,23 +461,8 @@ pred_df['risk_probability'] = pred_df['risk_probability'].round(3)
 # Select relevant columns
 pred_df_selected = pred_df[['gender_factor', 'age_factor', 'race_factor', 'priors_count', 'risk_probability']]
 
-# Create a styled table using Plotly
-header = dict(values=["Sex", "Age", "Race", "Priors", "Prob. High"],
-              fill_color='#F9E3D6',
-              align='center',
-              font=dict(size=24),height=60)
+show(pred_df_selected)
 
-cells = dict(values=[pred_df_selected[col] for col in pred_df_selected.columns],
-             fill_color=[['#F9E3D6']*len(pred_df_selected) if col == 'race_factor' else ['white']*len(pred_df_selected) for col in pred_df_selected.columns],
-             align='center',
-             font=dict(size=16),height=50)
-
-# Create the table
-table = go.Figure(data=[go.Table(header=header, cells=cells,columnwidth=[0.3,0.3,0.45,0.3,0.4])])
-table.update_layout(width=1000)
-
-# Show the table
-table.show()
 
 #print(tabulate(pred_df_selected, headers=["Sex", "Age Group", "Race", "Priors", "Prob. High"], #tablefmt="fancy_grid"))
 ```
@@ -549,24 +503,7 @@ pred_df['risk_probability'] = pred_df['risk_probability'].round(3)
 # Select relevant columns for display
 pred_df_selected = pred_df[['gender_factor', 'age_factor', 'race_factor', 'priors_count', 'risk_probability']]
 
-# Create a styled table using Plotly
-header = dict(values=["Sex", "Age Group", "Race", "Priors", "Prob. High"],
-              fill_color='#F9E3D6',
-              align='center',
-              font=dict(size=24),height=50)
-
-cells = dict(values=[pred_df_selected[col] for col in pred_df_selected.columns],
-             fill_color=[['#F9E3D6']*len(pred_df_selected) if col == 'race_factor' else ['white']*len(pred_df_selected) for col in pred_df_selected.columns],
-             align='center',
-             font=dict(size=18), height=50)
-
-# Create the table
-table = go.Figure(data=[go.Table(header=header, cells=cells, columnwidth=[0.6,0.6,0.8,0.4,0.4])])
-table.update_layout(width=1000)
-
-# Show the table
-table.show()
-
+show(pred_df_selected)
 ```
 
 . . .
@@ -589,9 +526,9 @@ How might the COMPAS algorithm implicitly factor racial information into its pre
 
 ![](../figures/confusion_matrix.png)
 
--   Accuracy:TP + FP / n
--   False positive rate (FPR): FP / (FP + TN)
--   False negative rate (FNR): FN / (FN + TP)
+-   Accuracy: TP + FP / n
+-   False positive rate (**FPR**): FP / (FP + TN)
+-   False negative rate (**FNR**): FN / (FN + TP)
 
 ## Examining FPR and FNR
 
@@ -609,11 +546,10 @@ How might the COMPAS algorithm implicitly factor racial information into its pre
 print(pd.crosstab(compas_scores['score_factor'], compas_scores['two_year_recid']))
 ```
 
-. . .
 
--   FPR: 1018 / (2345 + 1018) = 0.30
--   FNR: 1076 / (1733+1076) = 0.38
--   Accuracy: (2345 + 1733) / n = 0.66
+-   **FPR**: $1018 / (2345 + 1018) = 0.30$
+-   **FNR**: $1076 / (1733+1076) = 0.38$
+-   Accuracy: $(2345 + 1733) / n = 0.66$
 
 . . .
 
@@ -636,9 +572,9 @@ print(pd.crosstab(filtered_data['score_factor'], filtered_data['two_year_recid']
 ```
 <br>
 
-FPR = $641 / (873 + 641) = 0.57$
+**FPR** = $641 / (873 + 641) = 0.57$
 
-FNR = $473 / (473 + 1188) = 0.28$
+**FNR** = $473 / (473 + 1188) = 0.28$
 
 ACC = $(999+414)/(999+408+414+282) = 0.65$
 
@@ -654,9 +590,9 @@ print(pd.crosstab(filtered_data['score_factor'], filtered_data['two_year_recid']
 
 <br>
 
-FPR = $282 / (282 + 999) = 0.22$
+**FPR** = $282 / (282 + 999) = 0.22$
 
-FNR = $408 / (408 + 414) = 0.50$
+**FNR** = $408 / (408 + 414) = 0.50$
 
 ACC = $(999+414)/(999+408+414+282) = 0.67$
 
@@ -699,8 +635,10 @@ table = go.Figure(data=[go.Table(
     )
 )])
 
+show(df)
+
 # Show the table
-table.show()
+#table.show()
 ```
 
 
@@ -769,8 +707,8 @@ The following case study highlights the ethical importance and implications surr
 The statistic of interest in these simulations is the count of Black males if randomly selected from a population similar to Talladega County and a population with an 8% Black male proportion. Each randomly selected sample consisted of 100 individuals, representing the number of citizens on a jury panel. There were 10,000 iterations of random selection.
 
 ```{python JuryPool}
-#| fig-width: 6
-#| fig-height: 3
+#| fig-width: 8
+#| fig-height: 4
 #| fig-align: center
 # Set seed for reproducibility (equivalent to set.seed() in R)
 np.random.seed(1234)
@@ -833,7 +771,6 @@ mean_black = black_freq_full['black_count'].mean()
 sns.set_style("whitegrid")
 
 # Create the histogram
-plt.figure(figsize=(10, 5))
 sns.histplot(
     data=black_freq_full,
     x="black_count",
@@ -848,7 +785,7 @@ plt.axvline(x=mean_black, color="darkblue", linestyle="--", linewidth=1, label=f
 plt.axvline(x=8, color="red", linestyle="--", linewidth=1, label="Swain's Panel = 8")
 
 # Set plot title and axis labels (equivalent to labs)
-plt.title("Simulation: Number of Black Citizens in Jury Panel", fontsize=16)
+plt.title("Simulation: Number of Black Citizens in 100-Person Jury Panel", fontsize=16)
 plt.xlabel("Count of Randomly Selected Empaneled Black Jurors", fontsize=12)
 plt.ylabel("Number of Simulated Jury Panels", fontsize=12)
 
@@ -893,10 +830,10 @@ plt.show()
 
 
 
-## 3. Jury Pool
+## Jury Pool distribution
 
 ::::: Columns
-::: {.column width="40%"}
+::: {.column width="45%"}
 Consider the following hypothetical scenario.
 
 -   What if the panel of jurors consisted of 15 Black males?
@@ -905,14 +842,14 @@ Consider the following hypothetical scenario.
 
 -   Would you consider a panel of 21 Black males fair?
 
--   Take 5 minutes to discuss as a class your conclusion, remaining questions, and thoughts.
+-   Take 4 minutes to discuss.
 
-<iframe width="320" height="100" src="https://vclock.com/embed/timer/#countdown=00:05:00&amp;enabled=0&amp;seconds=300&amp;theme=0&amp;ampm=1&amp;sound=xylophone" frameborder="0" allowfullscreen>
+<iframe width="320" height="100" src="https://vclock.com/embed/timer/#countdown=00:04:00&amp;enabled=0&amp;seconds=300&amp;theme=0&amp;ampm=1&amp;sound=xylophone" frameborder="0" allowfullscreen>
 
 </iframe>
 :::
 
-::: {.column width="60%"}
+::: {.column width="50%"}
 ```{python JuryPool2}
 #| fig-width: 6
 #| fig-height: 6
@@ -1003,15 +940,15 @@ plt.show()
 :::
 :::::
 
-## Discussion questions:
+## Discussion:
 
 -   What are some advantages of random sampling in this context? How might random sampling promote ethical practices?
 
-- You can use use the jury panel examples to discuss how random sampling only leads to racial balance **on average** and how chance variability can lead to imbalance.
+- Note how random sampling only leads to racial balance **on average** and how chance variability can lead to imbalance.
 
-- How many black males need to be on the panel for you to be convinced that the sampling process was followed fairly? Can use this question to motivate the gray area in defining notions of significance.
+- How many black males need to be on the panel for you to be convinced that the sampling process was followed *fairly*? Such gray areas motivate notions of significance.
 
-- Is random sampling the fairest way to select the panel? Alternative: can use some kind of conditional random sampling to explicitly balance along certain demographic characteristiscs.
+- Is random sampling the fairest way to select the panel? There are alternatives such as using  conditional random sampling to explicitly balance along certain demographic characteristics.
 
 
 ## Sampling Bias
@@ -1022,7 +959,7 @@ What is sampling bias?
 
 -   Consequently, statistical bias in estimates may be observed. In other words, estimates cannot be trusted as reflecting or representing the population.
 
--   **Not investigating and addressing sampling issues raises ethical concerns**
+-   **Not investigating and addressing sampling issues raises ethical concerns**.
 
 ## Sampling and Representativeness
 
@@ -1041,15 +978,17 @@ What is sampling bias?
 
 -   In general, data scientists should pay special attention to observations recruitment, study procedures, and survey/assessment selection.
 
--   Since observational studies are not true experiments, researchers and data scientists can expect **bias** in samples and lower confidence in analytic findings along with other limitations [Jhangiani, Cuttler, Leighton, 2019](https://kpu.pressbooks.pub/psychmethods4e/chapter/overview-of-non-experimental-research/).
+-   Since observational studies are not true experiments, researchers and data scientists can expect **bias** in samples and lower confidence in analytic findings along with other limitations ([Jhangiani, Cuttler, Leighton, 2019](https://kpu.pressbooks.pub/psychmethods4e/chapter/overview-of-non-experimental-research/)).
     
-- Ethical practices that data scienists can engage while working with data from observational studies include: 
+- Ethical practices that data scientists can engage while working with data from observational studies include: 
       - Communicating with stakeholders that findings are not absolute truths.
       - Educating readers that correlation does not equal causation
       - Use statistical techniques, such as weights or conservative statistics, to deal with unequal representation and analytical confidence.  
 
 
-## UC Berkeley Graduate Admissions
+## III: UC Berkeley Graduate Admissions
+
+Famous study from 1970s:
 
 ```{python}
 #| fig-align: center
@@ -1103,11 +1042,11 @@ plt.show()
 ```
 
 
-## Possible explanations for the discrepancy
+## Possible explanations
 
-Possibilities:
+Discrepancy in admissions rates is caused by:
 
-- The difference is due to random chance (sampling variability)
+- Random chance (sampling variability)
 - Female applicants were less qualified than male applicants
 - UC Berkeley was biased against women
 - Confounding or lurker variables (the real explanation, described in the following slides)
@@ -1155,7 +1094,7 @@ total_women_rate = total_rates['Women_AdmitRate'].iloc[0]
 sns.set_style("whitegrid")
 
 # Create the plot
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(10, 5))
 sns.barplot(
     data=df_long,
     x='Department',
@@ -1173,12 +1112,12 @@ plt.ylim(0, 1)
 
 # Set titles and labels (equivalent to labs)
 plt.suptitle("Percent of applicants admitted by gender and department", y=1.02, fontsize=16, fontweight='bold')
-plt.title("Dashed lines indicate total admission rate by gender", fontsize=12)
-plt.xlabel("Department", fontsize=14)
-plt.ylabel("Admission Rate", fontsize=14)
+plt.title("Dashed lines indicate total admission rate by gender", fontsize=13)
+plt.xlabel("Department", fontsize=15)
+plt.ylabel("Admission Rate", fontsize=15)
 
 # Adjust legend position to the top
-plt.legend(title='Gender', loc='upper center', bbox_to_anchor=(0.5, 1.15), ncol=2)
+plt.legend(title='Gender', loc='upper center',  ncol=2)
 
 # Adjust layout to prevent overlapping elements
 plt.tight_layout(rect=[0, 0, 1, 0.95])
@@ -1205,7 +1144,7 @@ overall_admit_rate['OverallAdmit'] = overall_admit_rate['OverallAdmit'] / overal
 admissions = pd.merge(admissions, overall_admit_rate[['Department', 'OverallAdmit']], on='Department')
 
 # --- Create the plots using subplots (equivalent to patchwork) ---
-fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(10, 6))
+fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(9, 5))
 
 # Plot 1: Proportion Applying (equivalent to prop_applying)
 sns.barplot(
@@ -1266,7 +1205,7 @@ plt.show()
 
 
 
-For the previous plots, point out that that women tended to apply to departments that had much lower acceptance rate.  There was no major gender differences, once accounting for departmental preference.
+**Takeaway**: Women tended to apply to departments that had much lower acceptance rate.  There was no major gender differences, once accounting for departmental preference.
 
 
 
@@ -1281,19 +1220,17 @@ For the previous plots, point out that that women tended to apply to departments
 
 - Simpson's paradox highlights one way in which statistics (from observational data) can be misused or misinterpreted.
 
-## Summary discussion questions
+## Summary
 
-- Discuss some of the tradeoffs between conducting a randomized experiment and using observational data. 
-
-- What are the ethical benefits and barriers in running randomized experiments?
+- Ethical benefits and barriers in running **randomized** experiments:
   + Pro: Results will reflect the population (on average)
-  + Challenges: previously discussed issues with the ethics of assigning treatments
+  + Challenges: Ethics of assigning treatments
 
-- What are the ethical concerns associated with "natural experiments"? 
+- What are the ethical concerns associated with "**natural** experiments"? 
   + Data collection & privacy concerns
   + Dangers in drawing conclusions with reasoning over relevant confounders.  May not know what confounders to include. Expertise needed to reason about results carefully.
-  + Can increase prevalance of misinformation or misleading conclusions if not reported carefully.
+  + Can increase prevalence of misinformation or misleading conclusions if not reported carefully.
 
 
 
-## References
+## References {.smaller}
