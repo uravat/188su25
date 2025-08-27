@@ -13,8 +13,11 @@ bibliography: reference.bib
 #| slideshow: {slide_type: skip}
 import pandas as pd
 import numpy as np
+import statsmodels.api as sm
 import seaborn as sns
 import matplotlib.pyplot as plt
+from tabulate import tabulate
+from itables import show
 import IPython.display as display
 ```
 
@@ -295,8 +298,6 @@ Purportedly, race is not used as a predictor.
 ## Recidivism Data
 
 ```{python}
-import pandas as pd
-import numpy as np
 compas_scores = pd.read_csv('../../datasets/compas-scores-two-years.csv')
 
 compas_scores = compas_scores[['age', 'c_charge_degree', 'race', 'age_cat', 'score_text', 'sex', 'priors_count',
@@ -314,9 +315,6 @@ There are `{python} compas_scores.shape[0]` observations in the data we'll analy
 
 ```{python}
 #| layout-ncol: 2
-from tabulate import tabulate
-import plotly.graph_objects as go
-
 # Group by 'age_cat' and calculate proportions
 compas_scores_grouped_age = (
     compas_scores[['age_cat', 'race']]
@@ -332,7 +330,6 @@ compas_scores_grouped_age['proportion'] = compas_scores_grouped_age['count'] / l
 compas_scores_grouped_age['proportion'] = compas_scores_grouped_age['proportion'].round(2)
 
 # Display table using tabulate for formatting
-from itables import show
 df = pd.DataFrame({'Age Group': compas_scores_grouped_age['age_cat'], 'Proportion': compas_scores_grouped_age['proportion']})
 show(df)
 
@@ -350,7 +347,7 @@ compas_scores_grouped_race['proportion'] = compas_scores_grouped_race['count'] /
 # Format the proportions to 2 decimal places
 compas_scores_grouped_race['proportion'] = compas_scores_grouped_race['proportion'].round(2)
 
-# Display table using tabulate for formatting
+# Display table 
 df = pd.DataFrame({'Race': compas_scores_grouped_race['race'], 'Proportion': compas_scores_grouped_race['proportion']})
 show(df)
 
@@ -389,8 +386,6 @@ compas_scores['score_factor'] = pd.Categorical(
 
 
 ```{python}
-import statsmodels.api as sm
-
 # Define the dependent and independent variables
 X = compas_scores[['gender_factor', 'age_factor', 'race_factor', 'priors_count']]
 y = 1-compas_scores['score_factor'].cat.codes  # Converting categorical to numerical for the model
@@ -400,7 +395,7 @@ X = pd.get_dummies(X, drop_first=True)  # Convert categorical variables to dummy
 X = sm.add_constant(X)
 
 # Fit the logistic regression model (equivalent to glm in R with binomial family)
-model = sm.Logit(y, X.astype(float)).fit()
+model = sm.Logit(y, X.astype(float)).fit() # uses statsmodels.api
 
 # Print the model summary
 print(model.summary())
@@ -431,7 +426,6 @@ Compare predictions for two hypothetical individuals identical in all characteri
 
 
 ```{python old_v_young}
-import plotly.graph_objects as go
 # Create the prediction DataFrame
 pred_df = pd.DataFrame({
     'gender_factor': ['Male', 'Male'],
@@ -453,17 +447,12 @@ X_pred = pd.get_dummies(pred_df[['gender_factor', 'age_factor', 'race_factor', '
 X_pred = sm.add_constant(X_pred)
 
 # Predict risk probability using the logistic regression model
-pred_df['risk_probability'] = model.predict(X_pred.astype(float))
-
-# Round the 'risk_probability' column to 2 decimal places
-pred_df['risk_probability'] = pred_df['risk_probability'].round(3)
+pred_df['risk_probability'] = model.predict(X_pred.astype(float)).round(3)
 
 # Select relevant columns
 pred_df_selected = pred_df[['gender_factor', 'age_factor', 'race_factor', 'priors_count', 'risk_probability']]
 
 show(pred_df_selected)
-
-
 #print(tabulate(pred_df_selected, headers=["Sex", "Age Group", "Race", "Priors", "Prob. High"], #tablefmt="fancy_grid"))
 ```
 
@@ -495,10 +484,7 @@ X_pred = pd.get_dummies(pred_df[['gender_factor', 'age_factor', 'race_factor', '
 X_pred = sm.add_constant(X_pred)
 
 # Predict risk probability using the logistic regression model
-pred_df['risk_probability'] = model.predict(X_pred.astype(float))
-
-# Round the 'risk_probability' column to 3 decimal places
-pred_df['risk_probability'] = pred_df['risk_probability'].round(3)
+pred_df['risk_probability'] = model.predict(X_pred.astype(float)).round(3)
 
 # Select relevant columns for display
 pred_df_selected = pred_df[['gender_factor', 'age_factor', 'race_factor', 'priors_count', 'risk_probability']]
@@ -608,37 +594,7 @@ df = pd.DataFrame({
     'ACC': [0.65, 0.67, 0.66]
 })
 
-# Define a function to color cells based on the value (for FPR, FNR, ACC)
-def color_cells(value, domain_low, domain_high, color):
-    norm_value = (value - domain_low) / (domain_high - domain_low)  # normalize between 0 and 1
-    return f'rgba(255, 0, 0, {norm_value})' if domain_low <= value <= domain_high else 'white'
-
-# Apply the function to style the table
-fpr_colors = [color_cells(val, 0.2, 0.8, 'red') for val in df['FPR']]
-fnr_colors = [color_cells(val, 0.2, 0.8, 'red') for val in df['FNR']]
-acc_colors = [color_cells(val, 0.5, 1.0, 'red') for val in df['ACC']]
-
-# Create the table using Plotly's go.Table
-table = go.Figure(data=[go.Table(
-    header=dict(
-        values=["Group", "FPR", "FNR", "ACC"],
-        font=dict(size=24),
-        align='center',
-        fill_color='red'
-    ),
-    cells=dict(
-        values=[df['Group'], df['FPR'], df['FNR'], df['ACC']],
-        align='center',
-        fill_color=[['white'] * len(df), fpr_colors, fnr_colors, acc_colors],
-        font=dict(size=20),
-        height=40
-    )
-)])
-
 show(df)
-
-# Show the table
-#table.show()
 ```
 
 
@@ -1057,7 +1013,6 @@ This example can also fit into the [storytelling and visualization module](https
 
 ```{python}
 #| fig-align: center
-# Manually enter the data
 
 from matplotlib.ticker import PercentFormatter
 
@@ -1212,7 +1167,7 @@ plt.show()
 
 ## Simpson's Paradox
 
--   Simpson’s Paradox is a statistical phenomenon in which a trend that appears across multiple subgroups tends to reverse or disappear when the groups are combined.
+-   Simpson’s Paradox is a statistical phenomenon in which a trend that appears across multiple subgroups tends to **reverse or disappear** when the groups are combined.
 
 -   Correlations between variables can exist for many different reasons.  Sometimes correlation is due to some kind of causation, but often there is a simple explanation related to confounding variables or selection effects. Stratifying according to confounding variables can make associations disappear.
 
